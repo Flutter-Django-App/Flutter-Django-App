@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
+    'drf_multiple_model',
 ]
 
 MIDDLEWARE = [
@@ -129,3 +130,7 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_ALL_ORIGINS=True
+
+LOGIN_REDIRECT_URL = '/photos/'
+
+LOGOUT_REDIRECT_URL = '/'
