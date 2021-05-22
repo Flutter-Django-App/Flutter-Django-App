@@ -27,3 +27,5 @@ def photos_index(request):
     photos = Photo.objects.all()
     serializer = PhotoSerializer(photos, many=True)
     return Response(serializer.data)
+
+ 
