@@ -1,29 +1,30 @@
 from django.db import models
 from datetime import date
+from django.contrib.auth.models import User
 
 
-# Create your models here.
-class User(models.Model):
-    first_name = models.CharField(max_length=25)
-    last_name = models.CharField(max_length=25)
-    email = models.CharField(
-        max_length=25, 
-        blank=False
-    )
-    password = models.CharField(
-        max_length=25,
-        # default=8,
-        blank=False
-    )
-    username = models.CharField(
-        max_length=25,
-        unique=True,
-        blank=False
-    )
-    created_date = models.DateField('user created date')
+# # Create your models here.
+# class User(models.Model):
+#     first_name = models.CharField(max_length=25)
+#     last_name = models.CharField(max_length=25)
+#     email = models.CharField(
+#         max_length=25, 
+#         blank=False
+#     )
+#     password = models.CharField(
+#         max_length=25,
+#         # default=8,
+#         blank=False
+#     )
+#     username = models.CharField(
+#         max_length=25,
+#         unique=True,
+#         blank=False
+#     )
+#     created_date = models.DateField('user created date')
 
-    def __str__(self):
-        return self.username
+#     def __str__(self):
+#         return self.username
 
 class Photo(models.Model):
     total_likes = models.IntegerField()
@@ -50,6 +51,7 @@ class Comment(models.Model):
     )
     created_date = models.DateField('comment created date')
     photo = models.ForeignKey(Photo, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.comment

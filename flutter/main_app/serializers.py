@@ -20,3 +20,7 @@ class LikeSerializer(serializers.ModelSerializer):
   class Meta: 
     model = Like
     fields = '__all__'
+
+class Photo_UserSerializer(serializers.Serializer):
+  photos = PhotoSerializer(many=True)
+  user = UserSerializer(many=False)
