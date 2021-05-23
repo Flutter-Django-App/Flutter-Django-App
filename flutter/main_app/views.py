@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views import generic
 from rest_framework import serializers, generics
 from rest_framework.decorators import api_view
@@ -10,6 +11,7 @@ from .serializers import Photo_UserSerializer, UserSerializer, CommentSerializer
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from drf_multiple_model.views import ObjectMultipleModelAPIView
+
 
 # Create your views here.
 
@@ -46,13 +48,37 @@ def photos_index(request):
     # user_serializer = UserSerializer(users, many=False)
     return Response(serializer.data)
 
+@api_view(['POST'])
+def create_photo(request):
+  print("hitting")
+  data = request.data
+  photo = Photo.objects.create(
+    caption=data['caption'],
+    location=data['location'],
+    url=data['url'],
+    user=User.objects.get(id)
+  )
+  serializer = PhotoSerializer(photo, many=False)
+  return Response(serializer.data)
+
+# @login_required
 @api_view(['GET'])
-def home_page(request):
-  user_name = request.user
-  # print(user_name)
-  user = User.objects.first()
-  # print(user)
-  serializer = UserSerializer(user, many=False)
+def profile_page(request):
+    user_profile = request.user
+    serializer = UserSerializer(user_profile, many=False)
+    return Response(serializer.data)
+
+
+@api_view(['PUT'])
+def profile_update(request):
+  data = request.data
+  print(data)
+  user = User.objects.update_or_create(
+    username=data['username'],
+    first_name=data['first_name'],
+    last_name=data['last_name'],
+  )
+  serializer = UserSerializer(data, many=False)
   return Response(serializer.data)
 
 
