@@ -1,21 +1,54 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
+from .models import User, Photo, Comment, Like
+from rest_framework import permissions, status
 from django.views import generic
 from rest_framework import serializers, generics
 from rest_framework.decorators import api_view
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from rest_framework.response import Response
-from .models import User, Photo, Comment, Like
-from .serializers import Photo_UserSerializer, UserSerializer, CommentSerializer, PhotoSerializer, LikeSerializer
+from rest_framework.views import APIView
+from .serializers import Photo_UserSerializer, UserSerializer, CommentSerializer, PhotoSerializer, LikeSerializer, UserSerializerWithToken
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from drf_multiple_model.views import ObjectMultipleModelAPIView
 
+
 # Create your views here.
 
-@login_required
+@api_view(['GET'])
+def current_user(request):
+    """
+    Determine the current user by their token, and return their data
+    """
+
+    serializer = UserSerializer(request.user)
+    return Response(serializer.data)
+
+
+class UserList(APIView):
+    """
+    Create a new user. It's called 'UserList' because normally we'd have a get
+    method here too, for retrieving a list of all User objects.
+    """
+
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request, format=None):
+        serializer = UserSerializerWithToken(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# @login_required
 def home(request):
     print("hello")
+    print(request.user)
+    user_name = request.user
+    user = User.objects.get(username=user_name)
+    print(user)
     return render(request, 'home.html')
 
 
@@ -41,6 +74,39 @@ def photos_index(request):
     serializer = PhotoSerializer(photos, many=True)
     # user_serializer = UserSerializer(users, many=False)
     return Response(serializer.data)
+
+@api_view(['POST'])
+def create_photo(request):
+  print("hitting")
+  data = request.data
+  photo = Photo.objects.create(
+    caption=data['caption'],
+    location=data['location'],
+    url=data['url'],
+    user=User.objects.get(id)
+  )
+  serializer = PhotoSerializer(photo, many=False)
+  return Response(serializer.data)
+
+# @login_required
+@api_view(['GET'])
+def profile_page(request):
+    user_profile = request.user
+    serializer = UserSerializer(user_profile, many=False)
+    return Response(serializer.data)
+
+
+@api_view(['PUT'])
+def profile_update(request):
+  data = request.data
+  print(data)
+  user = User.objects.update_or_create(
+    username=data['username'],
+    first_name=data['first_name'],
+    last_name=data['last_name'],
+  )
+  serializer = UserSerializer(data, many=False)
+  return Response(serializer.data)
 
 
 # @api_view(['GET'])
