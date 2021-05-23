@@ -1,13 +1,15 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from .models import User, Photo, Comment, Like
+from rest_framework import permissions, status
 from django.views import generic
 from rest_framework import serializers, generics
 from rest_framework.decorators import api_view
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from rest_framework.response import Response
-from .models import User, Photo, Comment, Like
-from .serializers import Photo_UserSerializer, UserSerializer, CommentSerializer, PhotoSerializer, LikeSerializer
+from rest_framework.views import APIView
+from .serializers import Photo_UserSerializer, UserSerializer, CommentSerializer, PhotoSerializer, LikeSerializer, UserSerializerWithToken
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from drf_multiple_model.views import ObjectMultipleModelAPIView
@@ -15,7 +17,32 @@ from drf_multiple_model.views import ObjectMultipleModelAPIView
 
 # Create your views here.
 
-@login_required
+@api_view(['GET'])
+def current_user(request):
+    """
+    Determine the current user by their token, and return their data
+    """
+
+    serializer = UserSerializer(request.user)
+    return Response(serializer.data)
+
+
+class UserList(APIView):
+    """
+    Create a new user. It's called 'UserList' because normally we'd have a get
+    method here too, for retrieving a list of all User objects.
+    """
+
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request, format=None):
+        serializer = UserSerializerWithToken(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# @login_required
 def home(request):
     print("hello")
     print(request.user)
