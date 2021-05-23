@@ -16,6 +16,10 @@ from drf_multiple_model.views import ObjectMultipleModelAPIView
 @login_required
 def home(request):
     print("hello")
+    print(request.user)
+    user_name = request.user
+    user = User.objects.get(username=user_name)
+    print(user)
     return render(request, 'home.html')
 
 
@@ -41,6 +45,15 @@ def photos_index(request):
     serializer = PhotoSerializer(photos, many=True)
     # user_serializer = UserSerializer(users, many=False)
     return Response(serializer.data)
+
+@api_view(['GET'])
+def home_page(request):
+  user_name = request.user
+  # print(user_name)
+  user = User.objects.first()
+  # print(user)
+  serializer = UserSerializer(user, many=False)
+  return Response(serializer.data)
 
 
 # @api_view(['GET'])
