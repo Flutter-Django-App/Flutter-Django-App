@@ -134,3 +134,12 @@ CORS_ALLOW_ALL_ORIGINS=True
 LOGIN_REDIRECT_URL = '/photos/'
 
 LOGOUT_REDIRECT_URL = '/'
+
+# allows logged in user to perform CRUD
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': (
+#         'rest_framework.authentication.TokenAuthentication',
+#         'rest_framework.authentication.TokenAuthentication',
+#         )
+# }
+
