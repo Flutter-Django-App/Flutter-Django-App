@@ -17,7 +17,7 @@ from drf_multiple_model.views import ObjectMultipleModelAPIView
 
 # Create your views here.
 
-@api_view(['GET'])
+@api_view(['GET']) 
 def current_user(request):
     """
     Determine the current user by their token, and return their data
