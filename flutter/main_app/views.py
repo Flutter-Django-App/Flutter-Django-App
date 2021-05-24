@@ -13,6 +13,11 @@ from .serializers import Photo_UserSerializer, UserSerializer, CommentSerializer
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from drf_multiple_model.views import ObjectMultipleModelAPIView
+import uuid
+import boto3
+
+S3_BASE_URL = 'https://s3-us-west-1.amazonaws.com/'
+BUCKET = 'flutter-social-django-app'
 
 
 # Create your views here.
@@ -43,12 +48,15 @@ class UserList(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # @login_required
+# def home(request):
+#     print("hello")
+#     print(request.user)
+#     user_name = request.user
+#     user = User.objects.get(username=user_name)
+#     print(user)
+#     return render(request, 'home.html')
+
 def home(request):
-    print("hello")
-    print(request.user)
-    user_name = request.user
-    user = User.objects.get(username=user_name)
-    print(user)
     return render(request, 'home.html')
 
 
@@ -74,6 +82,8 @@ def photos_index(request):
     serializer = PhotoSerializer(photos, many=True)
     # user_serializer = UserSerializer(users, many=False)
     return Response(serializer.data)
+
+
 
 @api_view(['POST'])
 def create_photo(request):
@@ -135,5 +145,24 @@ def signup(request):
   form = UserCreationForm()
   context = {'form': form, 'error_message': error_message}
   return render(request, 'registration/signup.html', context)
+
+
+def add_photo(request, user_id):
+    # photo-file will be the "name" attribute on the <input type="file">
+    photo_file = request.FILES.get('photo-file', None)
+    if photo_file:
+        s3 = boto3.client('s3')
+        # need a unique "key" for S3 / needs image file extension too
+        key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
+        # just in case something goes wrong
+        try:
+            s3.upload_fileobj(photo_file, BUCKET, key)
+            # build the full url string
+            url = f"{S3_BASE_URL}{BUCKET}/{key}"
+            # we can assign to user_id or user (if you have a user object)
+            Photo.objects.create(url=url, user_id=user_id)
+        except:
+            print('An error occurred uploading file to S3')
+    return redirect('index')
 
  

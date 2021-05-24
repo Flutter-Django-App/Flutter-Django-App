@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 
 class Photo(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="photos")
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     caption = models.CharField(max_length=500)
     location = models.CharField(max_length=100)
     #below url is for storing the photo resource from AWS
@@ -13,7 +13,11 @@ class Photo(models.Model):
     # tags = models.ManyToManyField(Tag)
 
     def __str__(self):
+        return f"Photo for user_id: {self.user_id} @{self.url}"
+        
+    def __str__(self):
         return self.caption
+
 
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments")
