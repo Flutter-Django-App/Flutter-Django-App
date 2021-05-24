@@ -2,17 +2,10 @@ from rest_framework import serializers
 from rest_framework_jwt.settings import api_settings
 from .models import User, Photo, Comment, Like
 
-# class UserSerializer(serializers.ModelSerializer):
-#   class Meta: 
-#     model = User
-#     fields = '__all__'
-
 class UserSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = User
-        fields = ('username',)
-
+  class Meta: 
+    model = User
+    fields = '__all__'
 
 class UserSerializerWithToken(serializers.ModelSerializer):
 
