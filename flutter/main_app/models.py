@@ -2,17 +2,21 @@ from django.db import models
 from datetime import date
 from django.contrib.auth.models import User
 
+class Tag(models.Model):
+    tag = models.CharField(max_length=85)
+
+    def __str__(self):
+        return f"Tag: {self.tag}"
 
 class Photo(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     caption = models.CharField(max_length=500)
     location = models.CharField(max_length=100)
-    #below url is for storing the photo resource from AWS
-    url = models.CharField(max_length=200)
+    url = models.CharField(max_length=200) # URL for AWS upload
     created_date = models.DateTimeField(auto_now_add=True)
-    # tags = models.ManyToManyField(Tag)
+    tags = models.ManyToManyField(Tag, blank=True)
 
-    def __str__(self):
+    def __str__(self): # is this needed? Doesn't seem to be doing anything
         return f"Photo for user_id: {self.user_id} @{self.url}"
         
     def __str__(self):
@@ -35,8 +39,3 @@ class Like(models.Model):
     def __str__(self):
         return f"Photo-{self.photo_id} liked by User-{self.user_id}"
 
-# class Tag(models.Model):
-#     tag = models.CharField(max_length=85)
-
-#     def __str__(self):
-#         return f"Tag: {self.tag}"
