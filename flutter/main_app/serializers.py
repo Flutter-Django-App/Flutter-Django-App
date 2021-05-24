@@ -30,7 +30,7 @@ class UserSerializerWithToken(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('token', 'username', 'password')
+        fields = '__all__'
 
 class PhotoSerializer(serializers.ModelSerializer):
   class Meta: 

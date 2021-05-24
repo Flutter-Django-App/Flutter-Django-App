@@ -42,7 +42,8 @@ class UserList(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-# @login_required
+### Django Template ###
+@api_view(['GET'])
 def home(request):
     print("hello")
     print(request.user)
@@ -52,27 +53,13 @@ def home(request):
     return render(request, 'home.html')
 
 
-# @login_required
-# def photos_index(request):
-#     users = User.objects.all()
-#     photos = Photo.objects.all()
-#     comments = Comment.objects.all()
-#     likes = Like.objects.all()
-#     return render(request, 'photos/index.html', {
-#         'users': users,
-#         'photos': photos, 
-#         'comments': comments, 
-#         'likes' : likes 
-#     })
+### React Requests ###
 
-
-# @login_required
 @api_view(['GET'])
 def photos_index(request):
-    # users = request.user
     photos = Photo.objects.all()
     serializer = PhotoSerializer(photos, many=True)
-    # user_serializer = UserSerializer(users, many=False)
+    print(photos)
     return Response(serializer.data)
 
 @api_view(['POST'])
@@ -88,37 +75,11 @@ def create_photo(request):
   serializer = PhotoSerializer(photo, many=False)
   return Response(serializer.data)
 
-# @login_required
 @api_view(['GET'])
 def profile_page(request):
     user_profile = request.user
     serializer = UserSerializer(user_profile, many=False)
     return Response(serializer.data)
-
-
-@api_view(['PUT'])
-def profile_update(request):
-  data = request.data
-  print(data)
-  user = User.objects.update_or_create(
-    username=data['username'],
-    first_name=data['first_name'],
-    last_name=data['last_name'],
-  )
-  serializer = UserSerializer(data, many=False)
-  return Response(serializer.data)
-
-
-# @api_view(['GET'])
-# def photos_index(request):
-#     # class TextAPIView(ObjectMultipleModelAPIView):
-#         querylist = [
-#             {'queryset': Photo.objects.all(),
-#             'serializer_class': PhotoSerializer},
-#             {'queryset': request.user,
-#             'serializer_class': UserSerializer},
-#         ]
-#         return Response(querylist.data) 
 
 def signup(request):
   error_message = ''
@@ -135,5 +96,43 @@ def signup(request):
   form = UserCreationForm()
   context = {'form': form, 'error_message': error_message}
   return render(request, 'registration/signup.html', context)
+
+@api_view(['PUT'])
+def profile_update(request):
+  data = request.data
+  print(data)
+  user = User.objects.update_or_create(
+    username=data['username'],
+    first_name=data['first_name'],
+    last_name=data['last_name'],
+  )
+  serializer = UserSerializer(data, many=False)
+  return Response(serializer.data)
+
+# @login_required
+# def photos_index(request):
+#     users = User.objects.all()
+#     photos = Photo.objects.all()
+#     comments = Comment.objects.all()
+#     likes = Like.objects.all()
+#     return render(request, 'photos/index.html', {
+#         'users': users,
+#         'photos': photos, 
+#         'comments': comments, 
+#         'likes' : likes 
+#     })
+
+
+# @api_view(['GET'])
+# def photos_index(request):
+#     # class TextAPIView(ObjectMultipleModelAPIView):
+#         querylist = [
+#             {'queryset': Photo.objects.all(),
+#             'serializer_class': PhotoSerializer},
+#             {'queryset': request.user,
+#             'serializer_class': UserSerializer},
+#         ]
+#         return Response(querylist.data) 
+
 
  
