@@ -56,10 +56,34 @@ def home(request):
 ### React Requests ###
 
 @api_view(['GET'])
+def allusers(request):
+    # users = request.user
+    users = User.objects.all()
+    serializer = UserSerializer(users, many=True)
+    # user_serializer = UserSerializer(users, many=False)
+    return Response(serializer.data)
+    
+@api_view(['GET'])
 def photos_index(request):
     photos = Photo.objects.all()
     serializer = PhotoSerializer(photos, many=True)
     print(photos)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def comments(request):
+    # users = request.user
+    comments = Comment.objects.all()
+    serializer = CommentSerializer(comments, many=True)
+    # user_serializer = UserSerializer(users, many=False)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def likes(request):
+    # users = request.user
+    likes = Like.objects.all()
+    serializer = LikeSerializer(likes, many=True)
+    # user_serializer = UserSerializer(users, many=False)
     return Response(serializer.data)
 
 @api_view(['POST'])
@@ -75,6 +99,17 @@ def create_photo(request):
   serializer = PhotoSerializer(photo, many=False)
   return Response(serializer.data)
 
+@api_view(['POST'])
+def create_comment(request):
+  print("hitting")
+  data = request.data
+  comment = Comment.objects.create(
+    comment=data['comment']
+  )
+  serializer = CommentSerializer(comment, many=False)
+  return Response(serializer.data)
+
+# @login_required
 @api_view(['GET'])
 def profile_page(request):
     user_profile = request.user
