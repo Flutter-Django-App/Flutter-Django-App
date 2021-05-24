@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    'drf_multiple_model',
+    # 'drf_multiple_model',
 ]
 
 MIDDLEWARE = [

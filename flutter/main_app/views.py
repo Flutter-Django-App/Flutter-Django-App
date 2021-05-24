@@ -12,7 +12,7 @@ from rest_framework.views import APIView
 from .serializers import Photo_UserSerializer, UserSerializer, CommentSerializer, PhotoSerializer, LikeSerializer, UserSerializerWithToken
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from drf_multiple_model.views import ObjectMultipleModelAPIView
+# from drf_multiple_model.views import ObjectMultipleModelAPIView
 import uuid
 import boto3
 

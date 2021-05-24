@@ -1,4 +1,4 @@
-#!/home/kevindecker/SEI/Projects/Flutter/backend/Flutter-Django-App/flutter/myenv/bin/python3
+#!/home/kevindecker/SEI/Projects/Flutter/Flutter-Django-App/flutter/myenv/bin/python3
 # When the django-admin.py deprecation ends, remove this script.
 import warnings
 

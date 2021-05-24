@@ -29,7 +29,7 @@ end
 # unset irrelevant variables
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/home/kevindecker/SEI/Projects/Flutter/backend/Flutter-Django-App/flutter/myenv"
+set -gx VIRTUAL_ENV "/home/kevindecker/SEI/Projects/Flutter/Flutter-Django-App/flutter/myenv"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH
