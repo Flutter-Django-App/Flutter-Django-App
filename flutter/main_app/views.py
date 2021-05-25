@@ -9,26 +9,170 @@ from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .serializers import Photo_UserSerializer, UserSerializer, CommentSerializer, PhotoSerializer, LikeSerializer, UserSerializerWithToken
+from .serializers import (
+    Photo_UserSerializer,
+    UserSerializer,
+    CommentSerializer,
+    PhotoSerializer,
+    LikeSerializer,
+    UserSerializerWithToken,
+)
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+
 # from drf_multiple_model.views import ObjectMultipleModelAPIView
 import uuid
 import boto3
 
-S3_BASE_URL = 'https://s3-us-west-1.amazonaws.com/'
-BUCKET = 'flutter-social-django-app'
+S3_BASE_URL = "https://s3-us-west-1.amazonaws.com/"
+BUCKET = "flutter-social-django-app"
 
 
-# Create your views here.
+### React Request Handlers ###
 
-@api_view(['GET']) 
+# Home
+
+
+@api_view(["GET"])
+def home(request):
+    return render(request, "home.html")
+
+
+# Photos
+
+
+@api_view(["GET"])
+def photos_index(request):
+    photos = Photo.objects.all()
+    serializer = PhotoSerializer(photos, many=True)
+    print(photos)
+    return Response(serializer.data)
+
+
+@api_view(["POST"])
+def create_photo(request):
+    print("hitting")
+    data = request.data
+    photo = Photo.objects.create(
+        caption=data["caption"],
+        location=data["location"],
+        url=data["url"],
+        user=User.objects.get(id),
+    )
+    serializer = PhotoSerializer(photo, many=False)
+    return Response(serializer.data)
+
+
+### ADDING VIA DJANGO ###
+def add_photo(request, user_id):
+    # photo-file will be the "name" attribute on the <input type="file">
+    photo_file = request.FILES.get("photo-file", None)
+    if photo_file:
+        s3 = boto3.client("s3")
+        # need a unique "key" for S3 / needs image file extension too
+        key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind(".") :]
+        # just in case something goes wrong
+        try:
+            s3.upload_fileobj(photo_file, BUCKET, key)
+            # build the full url string
+            url = f"{S3_BASE_URL}{BUCKET}/{key}"
+            # we can assign to user_id or user (if you have a user object)
+            Photo.objects.create(url=url, user_id=user_id)
+        except:
+            print("An error occurred uploading file to S3")
+    return redirect("index")
+
+
+# Comments / Likes
+
+
+@api_view(["GET"])
+def comments(request):
+    # users = request.user
+    comments = Comment.objects.all()
+    serializer = CommentSerializer(comments, many=True)
+    # user_serializer = UserSerializer(users, many=False)
+    return Response(serializer.data)
+
+
+@api_view(["POST"])
+def create_comment(request):
+    print("hitting")
+    data = request.data
+    comment = Comment.objects.create(comment=data["comment"])
+    serializer = CommentSerializer(comment, many=False)
+    return Response(serializer.data)
+
+
+@api_view(["GET"])
+def likes(request):
+    # users = request.user
+    likes = Like.objects.all()
+    serializer = LikeSerializer(likes, many=True)
+    # user_serializer = UserSerializer(users, many=False)
+    return Response(serializer.data)
+
+
+# Profile
+
+
+@api_view(["GET"])
+def profile_page(request):
+    user_profile = request.user
+    serializer = UserSerializer(user_profile, many=False)
+    return Response(serializer.data)
+
+
+@api_view(["PUT"])
+def profile_update(request):
+    data = request.data
+    print(data)
+    user = User.objects.update_or_create(
+        username=data["username"],
+        first_name=data["first_name"],
+        last_name=data["last_name"],
+    )
+    serializer = UserSerializer(data, many=False)
+    return Response(serializer.data)
+
+
+# Sign Up / Login
+
+
+def signup(request):
+    error_message = ""
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            # This logs in the new user
+            login(request, user)
+            return redirect("index")
+        else:
+            error_message = "Invalid sign up - try again"
+    # A bad POST (bad signup) or a GET request
+    form = UserCreationForm()
+    context = {"form": form, "error_message": error_message}
+    return render(request, "registration/signup.html", context)
+
+
+# Users
+
+
+@api_view(["GET"])
 def current_user(request):
     """
     Determine the current user by their token, and return their data
     """
 
     serializer = UserSerializer(request.user)
+    return Response(serializer.data)
+
+
+@api_view(["GET"])
+def allusers(request):
+    users = User.objects.all()
+    serializer = UserSerializer(users, many=True)
     return Response(serializer.data)
 
 
@@ -48,6 +192,8 @@ class UserList(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+### Unknown Commented Out Code ###
+
 # @login_required
 # def home(request):
 #     print("hello")
@@ -58,105 +204,6 @@ class UserList(APIView):
 #     return render(request, 'home.html')
 
 
-### Django Template ###
-@api_view(['GET'])
-def home(request):
-    return render(request, 'home.html')
-
-
-### React Requests ###
-
-@api_view(['GET'])
-def allusers(request):
-    # users = request.user
-    users = User.objects.all()
-    serializer = UserSerializer(users, many=True)
-    # user_serializer = UserSerializer(users, many=False)
-    return Response(serializer.data)
-    
-@api_view(['GET'])
-def photos_index(request):
-    photos = Photo.objects.all()
-    serializer = PhotoSerializer(photos, many=True)
-    print(photos)
-    return Response(serializer.data)
-
-@api_view(['GET'])
-def comments(request):
-    # users = request.user
-    comments = Comment.objects.all()
-    serializer = CommentSerializer(comments, many=True)
-    # user_serializer = UserSerializer(users, many=False)
-    return Response(serializer.data)
-
-@api_view(['GET'])
-def likes(request):
-    # users = request.user
-    likes = Like.objects.all()
-    serializer = LikeSerializer(likes, many=True)
-    # user_serializer = UserSerializer(users, many=False)
-    return Response(serializer.data)
-
-
-
-@api_view(['POST'])
-def create_photo(request):
-  print("hitting")
-  data = request.data
-  photo = Photo.objects.create(
-    caption=data['caption'],
-    location=data['location'],
-    url=data['url'],
-    user=User.objects.get(id)
-  )
-  serializer = PhotoSerializer(photo, many=False)
-  return Response(serializer.data)
-
-@api_view(['POST'])
-def create_comment(request):
-  print("hitting")
-  data = request.data
-  comment = Comment.objects.create(
-    comment=data['comment']
-  )
-  serializer = CommentSerializer(comment, many=False)
-  return Response(serializer.data)
-
-# @login_required
-@api_view(['GET'])
-def profile_page(request):
-    user_profile = request.user
-    serializer = UserSerializer(user_profile, many=False)
-    return Response(serializer.data)
-
-def signup(request):
-  error_message = ''
-  if request.method == 'POST':
-    form = UserCreationForm(request.POST)
-    if form.is_valid():
-      user = form.save()
-      # This logs in the new user
-      login(request, user)
-      return redirect('index')
-    else:
-      error_message = 'Invalid sign up - try again'
-  # A bad POST (bad signup) or a GET request
-  form = UserCreationForm()
-  context = {'form': form, 'error_message': error_message}
-  return render(request, 'registration/signup.html', context)
-
-@api_view(['PUT'])
-def profile_update(request):
-  data = request.data
-  print(data)
-  user = User.objects.update_or_create(
-    username=data['username'],
-    first_name=data['first_name'],
-    last_name=data['last_name'],
-  )
-  serializer = UserSerializer(data, many=False)
-  return Response(serializer.data)
-
 # @login_required
 # def photos_index(request):
 #     users = User.objects.all()
@@ -165,9 +212,9 @@ def profile_update(request):
 #     likes = Like.objects.all()
 #     return render(request, 'photos/index.html', {
 #         'users': users,
-#         'photos': photos, 
-#         'comments': comments, 
-#         'likes' : likes 
+#         'photos': photos,
+#         'comments': comments,
+#         'likes' : likes
 #     })
 
 
@@ -180,26 +227,4 @@ def profile_update(request):
 #             {'queryset': request.user,
 #             'serializer_class': UserSerializer},
 #         ]
-#         return Response(querylist.data) 
-
-
-
-def add_photo(request, user_id):
-    # photo-file will be the "name" attribute on the <input type="file">
-    photo_file = request.FILES.get('photo-file', None)
-    if photo_file:
-        s3 = boto3.client('s3')
-        # need a unique "key" for S3 / needs image file extension too
-        key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
-        # just in case something goes wrong
-        try:
-            s3.upload_fileobj(photo_file, BUCKET, key)
-            # build the full url string
-            url = f"{S3_BASE_URL}{BUCKET}/{key}"
-            # we can assign to user_id or user (if you have a user object)
-            Photo.objects.create(url=url, user_id=user_id)
-        except:
-            print('An error occurred uploading file to S3')
-    return redirect('index')
-
- 
+#         return Response(querylist.data)
