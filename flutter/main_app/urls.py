@@ -8,6 +8,7 @@ urlpatterns = [
   path('comments/', views.comments, name='comments'),
   path('comments/create/', views.create_comment, name='create_comment'),
   path('likes/', views.likes, name='likes'),
+  path('likes/create/', views.create_like, name='create_like'),
   path('photos/create/', views.create_photo, name='create_photo'),
   path('photos/<int:user_id>/add_photo/', views.add_photo, name='add_photo'),
   path('profile/', views.profile_page, name='profile'),
