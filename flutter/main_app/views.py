@@ -48,7 +48,7 @@ def home(request):
 def photos_index(request):
     photos = Photo.objects.all()
     serializer = PhotoSerializer(photos, many=True)
-    # print(photos)
+    print(len(serializer.data[0]['likes'])) # determines how many likes
     return Response(serializer.data)
 
 
