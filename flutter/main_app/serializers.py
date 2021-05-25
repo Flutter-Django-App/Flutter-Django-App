@@ -1,6 +1,7 @@
+from django.db.models.query import prefetch_related_objects
 from rest_framework import serializers
 from rest_framework_jwt.settings import api_settings
-from .models import User, Photo, Comment, Like
+from .models import User, Photo, Comment, Like, Tag
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -35,21 +36,34 @@ class UserSerializerWithToken(serializers.ModelSerializer):
         fields = "__all__"  # fields ('token', 'username', 'password')
 
 
-class PhotoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Photo
-        fields = "__all__"
-
-
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = "__all__"
 
 
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = "__all__"
+
+
 class LikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like
+        fields = "__all__"
+
+
+class PhotoSerializer(serializers.ModelSerializer):
+    user = UserSerializer(many=False)
+    select_related_fields = ("user",)
+    comments = CommentSerializer(many=True)
+    likes = LikeSerializer(many=True)
+    tags = TagSerializer(many=True)
+    prefetch_related_fields = ("comments", "tags", "likes")
+
+    class Meta:
+        model = Photo
         fields = "__all__"
 
 

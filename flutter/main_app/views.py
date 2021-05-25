@@ -53,7 +53,7 @@ def photos_index(request):
     # photos.sort((a, b) => a.created_date > b.created_date);
     # photos.sort(key=lambda x: x.created_date, reverse=True)
     serializer = PhotoSerializer(photos, many=True)
-    # print(photos)
+    print(len(serializer.data[0]['likes'])) # determines how many likes
     return Response(serializer.data)
 
 
