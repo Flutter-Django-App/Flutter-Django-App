@@ -2,10 +2,12 @@ from rest_framework import serializers
 from rest_framework_jwt.settings import api_settings
 from .models import User, Photo, Comment, Like
 
+
 class UserSerializer(serializers.ModelSerializer):
-  class Meta: 
-    model = User
-    fields = '__all__'
+    class Meta:
+        model = User
+        fields = "__all__"  # fields = ('username',)
+
 
 class UserSerializerWithToken(serializers.ModelSerializer):
 
@@ -21,7 +23,7 @@ class UserSerializerWithToken(serializers.ModelSerializer):
         return token
 
     def create(self, validated_data):
-        password = validated_data.pop('password', None)
+        password = validated_data.pop("password", None)
         instance = self.Meta.model(**validated_data)
         if password is not None:
             instance.set_password(password)
@@ -30,23 +32,27 @@ class UserSerializerWithToken(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = '__all__'
+        fields = "__all__"  # fields ('token', 'username', 'password')
+
 
 class PhotoSerializer(serializers.ModelSerializer):
-  class Meta: 
-    model = Photo
-    fields = '__all__'
+    class Meta:
+        model = Photo
+        fields = "__all__"
+
 
 class CommentSerializer(serializers.ModelSerializer):
-  class Meta: 
-    model = Comment
-    fields = '__all__'
+    class Meta:
+        model = Comment
+        fields = "__all__"
+
 
 class LikeSerializer(serializers.ModelSerializer):
-  class Meta: 
-    model = Like
-    fields = '__all__'
+    class Meta:
+        model = Like
+        fields = "__all__"
+
 
 class Photo_UserSerializer(serializers.Serializer):
-  photos = PhotoSerializer(many=True)
-  user = UserSerializer(many=False)
+    photos = PhotoSerializer(many=True)
+    user = UserSerializer(many=False)
