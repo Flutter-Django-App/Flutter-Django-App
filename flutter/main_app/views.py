@@ -115,6 +115,15 @@ def likes(request):
     # user_serializer = UserSerializer(users, many=False)
     return Response(serializer.data)
 
+@api_view(['POST'])
+def create_like(request):
+  print("hitting")
+  data = request.data
+  like = Like.objects.create(
+    photo=data['likedPhotoId']
+  )
+  serializer = LikeSerializer(like, many=False)
+  return Response(serializer.data)
 
 # Profile
 

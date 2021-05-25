@@ -23,3 +23,4 @@ urlpatterns = [
     path("users/", views.UserList.as_view()),
     path("allusers/", views.allusers, name="allusers"),
 ]
+
