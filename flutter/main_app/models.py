@@ -9,10 +9,10 @@ class Tag(models.Model):
         return f"Tag: {self.tag}"
 
 class Photo(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user")
     caption = models.CharField(max_length=500)
     location = models.CharField(max_length=100)
-    url = models.CharField(max_length=200) # URL for AWS upload
+    url = models.CharField(max_length=200, null=False) # URL for AWS upload
     created_date = models.DateTimeField(auto_now_add=True)
     tags = models.ManyToManyField(Tag, blank=True)
 
