@@ -46,7 +46,12 @@ def home(request):
 
 @api_view(["GET"])
 def photos_index(request):
-    photos = Photo.objects.all()
+    photos = Photo.objects.all().order_by('created_date')
+    # new_photos  = Photo.objects.select_related('user')
+    # print(new_photos)
+    # photos = Photo.objects.get()
+    # photos.sort((a, b) => a.created_date > b.created_date);
+    # photos.sort(key=lambda x: x.created_date, reverse=True)
     serializer = PhotoSerializer(photos, many=True)
     print(len(serializer.data[0]['likes'])) # determines how many likes
     return Response(serializer.data)
@@ -54,15 +59,27 @@ def photos_index(request):
 
 @api_view(["POST"])
 def create_photo(request):
-    # print("hitting")
+    print('hitting')
     data = request.data
+    print(data)
     photo = Photo.objects.create(
         caption=data["caption"],
         location=data["location"],
         url=data["url"],
         user=User.objects.get(id),
     )
+    print(photo)
     serializer = PhotoSerializer(photo, many=False)
+    return Response(serializer.data)
+    
+@api_view(["POST"])
+def delete_photo(request):
+    # print("hitting")
+    data = request.data
+    new_photos_array = Photo.objects.remove(
+        photo=data["photo.id"],
+    )
+    serializer = PhotoSerializer(new_photos_array, many=True)
     return Response(serializer.data)
 
 
@@ -70,6 +87,8 @@ def create_photo(request):
 def add_photo(request, user_id):
     # photo-file will be the "name" attribute on the <input type="file">
     photo_file = request.FILES.get("photo-file", None)
+    print(f'photo_file {photo_file}')
+
     if photo_file:
         s3 = boto3.client("s3")
         # need a unique "key" for S3 / needs image file extension too
@@ -81,6 +100,7 @@ def add_photo(request, user_id):
             url = f"{S3_BASE_URL}{BUCKET}/{key}"
             # we can assign to user_id or user (if you have a user object)
             Photo.objects.create(url=url, user_id=user_id)
+
         except:
             print("An error occurred uploading file to S3")
     return redirect("index")
