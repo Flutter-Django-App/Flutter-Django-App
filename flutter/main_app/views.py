@@ -1,14 +1,12 @@
-from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-from .models import User, Photo, Comment, Like
-from rest_framework import permissions, status
-from django.views import generic
-from rest_framework import serializers, generics
-from rest_framework.decorators import api_view
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
+from rest_framework import permissions, status
+from rest_framework import serializers, generics
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from .models import User, Photo, Comment, Like
 from .serializers import (
     Photo_UserSerializer,
     UserSerializer,
@@ -17,12 +15,16 @@ from .serializers import (
     LikeSerializer,
     UserSerializerWithToken,
 )
+import uuid
+import boto3
+
+from django.http import HttpResponseRedirect
+from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 # from drf_multiple_model.views import ObjectMultipleModelAPIView
-import uuid
-import boto3
+
 
 S3_BASE_URL = "https://s3-us-west-1.amazonaws.com/"
 BUCKET = "flutter-social-django-app"
@@ -35,7 +37,8 @@ BUCKET = "flutter-social-django-app"
 
 @api_view(["GET"])
 def home(request):
-    return render(request, "home.html")
+    print(request)
+    return render(request, "home.html")  # return ""
 
 
 # Photos
@@ -45,13 +48,13 @@ def home(request):
 def photos_index(request):
     photos = Photo.objects.all()
     serializer = PhotoSerializer(photos, many=True)
-    print(photos)
+    # print(photos)
     return Response(serializer.data)
 
 
 @api_view(["POST"])
 def create_photo(request):
-    print("hitting")
+    # print("hitting")
     data = request.data
     photo = Photo.objects.create(
         caption=data["caption"],
@@ -97,7 +100,7 @@ def comments(request):
 
 @api_view(["POST"])
 def create_comment(request):
-    print("hitting")
+    # print("hitting")
     data = request.data
     comment = Comment.objects.create(comment=data["comment"])
     serializer = CommentSerializer(comment, many=False)
@@ -135,7 +138,7 @@ def profile_page(request):
 @api_view(["PUT"])
 def profile_update(request):
     data = request.data
-    print(data)
+    # print(data)
     user = User.objects.update_or_create(
         username=data["username"],
         first_name=data["first_name"],
@@ -195,6 +198,7 @@ class UserList(APIView):
 
     def post(self, request, format=None):
         serializer = UserSerializerWithToken(data=request.data)
+        print(serializer.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
