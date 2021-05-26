@@ -131,17 +131,13 @@ def comments(request):
 def create_comment(request, user_id, photo_id):
     authentication_classes = (authentication.TokenAuthentication,)
     permission_classes = (permissions.AllowAny,)
-    print('--------------------------------------')
-    print(request)
     data = request.data
-    user = User.objects.get(username= 'andrewhuang')
-    photo = Photo.objects.get(id='1')
-    print(data)
-    print(user_id)
+    user = User.objects.get(pk=data['user'])
+    photo = Photo.objects.get(id=data['photo'])
     comment = Comment.objects.create(
-        comment = data['comment'],
+        user = user,
         photo = photo,
-        user = user
+        comment = data['comment'],
     )
     serializer = CommentSerializer(comment, many = False)
     return Response(serializer.data)
