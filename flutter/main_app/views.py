@@ -48,14 +48,10 @@ def home(request):
 
 @api_view(["GET"])
 def photos_index(request):
+    authentication_classes = (authentication.TokenAuthentication,)
+    permission_classes = (permissions.AllowAny,)
     photos = Photo.objects.all().order_by('created_date')
-    # new_photos  = Photo.objects.select_related('user')
-    # print(new_photos)
-    # photos = Photo.objects.get()
-    # photos.sort((a, b) => a.created_date > b.created_date);
-    # photos.sort(key=lambda x: x.created_date, reverse=True)
     serializer = PhotoSerializer(photos, many=True)
-    print(len(serializer.data[0]['likes'])) # determines how many likes
     return Response(serializer.data)
 
 
@@ -192,6 +188,8 @@ def create_like(request, user_id, photo_id):
 
 @api_view(["GET"])
 def profile_page(request):
+    authentication_classes = (authentication.TokenAuthentication,)
+    permission_classes = (permissions.AllowAny,)
     user_profile = request.user
     serializer = UserSerializer(user_profile, many=False)
     return Response(serializer.data)
