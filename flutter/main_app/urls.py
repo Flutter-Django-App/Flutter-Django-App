@@ -16,6 +16,8 @@ urlpatterns = [
     # Comments
     path("comments/", views.comments, name="comments"),
     path("comments/<int:user_id>/create/<int:photo_id>/", views.create_comment, name="create_comment"),
+    path("comments/<int:photo_id>/delete_comment/", views.delete_comment, name="delete_comment"),
+
     # Likes
     path("likes/", views.likes, name="likes"),
     path("likes/<int:user_id>/create/<int:photo_id>/", views.create_like, name="create_like"),

@@ -129,16 +129,6 @@ def comments(request):
     # user_serializer = UserSerializer(users, many=False)
     return Response(serializer.data)
 
-
-# @api_view(["POST"])
-# def create_comment(request):
-#     # print("hitting")
-#     data = request.data
-#     comment = Comment.objects.create(comment=data["comment"])
-#     serializer = CommentSerializer(comment, many=False)
-#     return Response(serializer.data)
-
-
 @api_view(['POST'])
 def create_comment(request, user_id, photo_id):
     authentication_classes = (authentication.TokenAuthentication,)
@@ -154,6 +144,24 @@ def create_comment(request, user_id, photo_id):
     serializer = CommentSerializer(comment, many = False)
     return Response(serializer.data)
 
+@api_view(['DELETE'])
+def delete_comment(request, photo_id):
+    authentication_classes = (authentication.TokenAuthentication,)
+    permission_classes = (permissions.AllowAny,)
+    print('--------------------------------------')
+    print(request)
+    print(photo_id)
+    # print(user_id)
+    data = request
+    # user = User.objects.get(username= 'andrewhuang')
+    # photo = Photo.objects.get(id=photo_id)
+    Comment.objects.get(id=photo_id).delete()
+    # photos = Photo.objects.filter(id=photo_id).delete()
+    comments = Comment.objects.all()
+    serializer = CommentSerializer(comments, many = True)
+    # print(photos)
+    return Response(serializer.data)
+
 @api_view(["GET"])
 def likes(request):
     # users = request.user
@@ -161,10 +169,6 @@ def likes(request):
     serializer = LikeSerializer(likes, many=True)
     # user_serializer = UserSerializer(users, many=False)
     return Response(serializer.data)
-
-
-
- 
 
 @api_view(['POST'])
 def create_like(request, user_id, photo_id):
