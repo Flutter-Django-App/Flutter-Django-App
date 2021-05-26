@@ -9,6 +9,8 @@ urlpatterns = [
     path("photos/create/", views.create_photo, name="create_photo"),
     path("photos/<int:user_id>/add_photo/", views.add_photo, name="add_photo"),
     path("photos/<int:photo_id>/delete_photo/", views.delete_photo, name="delete_photo"),
+    # path('photos/<int:pk>/delete_photo/', views.PhotoDelete.as_view(), name='delete_photo'),
+
     # Comments
     path("comments/", views.comments, name="comments"),
     path("comments/<int:user_id>/create/<int:photo_id>/", views.create_comment, name="create_comment"),
