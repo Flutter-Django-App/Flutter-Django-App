@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
-from rest_framework import permissions, status
+from rest_framework import permissions, status, authentication
 from rest_framework import serializers, generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -118,14 +118,33 @@ def comments(request):
     return Response(serializer.data)
 
 
-@api_view(["POST"])
-def create_comment(request):
-    # print("hitting")
-    data = request.data
-    comment = Comment.objects.create(comment=data["comment"])
-    serializer = CommentSerializer(comment, many=False)
-    return Response(serializer.data)
+# @api_view(["POST"])
+# def create_comment(request):
+#     # print("hitting")
+#     data = request.data
+#     comment = Comment.objects.create(comment=data["comment"])
+#     serializer = CommentSerializer(comment, many=False)
+#     return Response(serializer.data)
 
+
+@api_view(['POST'])
+def create_comment(request, user_id, photo_id):
+    authentication_classes = (authentication.TokenAuthentication,)
+    permission_classes = (permissions.AllowAny,)
+    print('--------------------------------------')
+    print(request)
+    data = request.data
+    user = User.objects.get(username= 'andrewhuang')
+    photo = Photo.objects.get(id='1')
+    print(data)
+    print(user_id)
+    comment = Comment.objects.create(
+        comment = data['comment'],
+        photo = photo,
+        user = user
+    )
+    serializer = CommentSerializer(comment, many = False)
+    return Response(serializer.data)
 
 @api_view(["GET"])
 def likes(request):

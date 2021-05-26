@@ -23,3 +23,4 @@ urlpatterns = [
     path('token-auth/', obtain_jwt_token),
     path('accounts/', include('django.contrib.auth.urls')),
 ]
+
