@@ -6,6 +6,8 @@ from rest_framework import serializers, generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+
 from .models import User, Photo, Comment, Like
 from .serializers import (
     Photo_UserSerializer,
@@ -72,15 +74,37 @@ def create_photo(request):
     serializer = PhotoSerializer(photo, many=False)
     return Response(serializer.data)
     
-@api_view(["POST"])
-def delete_photo(request):
-    # print("hitting")
-    data = request.data
-    new_photos_array = Photo.objects.remove(
-        photo=data["photo.id"],
-    )
-    serializer = PhotoSerializer(new_photos_array, many=True)
-    return Response(serializer.data)
+# @api_view(["POST"])
+# def delete_photo(request):
+#     # print("hitting")
+#     data = request.data
+#     new_photos_array = Photo.objects.remove(
+#         photo=data["photo.id"],
+#     )
+#     serializer = PhotoSerializer(new_photos_array, many=True)
+#     return Response(serializer.data)
+
+# class PhotoDelete(DeleteView):
+#     authentication_classes = (authentication.TokenAuthentication,)
+#     permission_classes = (permissions.AllowAny,)
+#     model = Photo
+#     success_url = '/photos/'
+
+@api_view(['DELETE'])
+def delete_photo(request, photo_id):
+    authentication_classes = (authentication.TokenAuthentication,)
+    permission_classes = (permissions.AllowAny,)
+    print('--------------------------------------')
+    print(request)
+    print(photo_id)
+    data = request
+    # user = User.objects.get(username= 'andrewhuang')
+    # photo = Photo.objects.get(id=photo_id)
+    # print(user_id)
+    photos = Photo.objects.filter(id=photo_id).delete()
+    photos = Photo.objects.all()
+    # serializer = PhotoSerializer(photos, many = False)
+    return Response()
 
 
 ### ADDING VIA DJANGO ###
