@@ -101,10 +101,12 @@ def delete_photo(request, photo_id):
     # user = User.objects.get(username= 'andrewhuang')
     # photo = Photo.objects.get(id=photo_id)
     # print(user_id)
-    photos = Photo.objects.filter(id=photo_id).delete()
+    Photo.objects.get(id=photo_id).delete()
+    # photos = Photo.objects.filter(id=photo_id).delete()
     photos = Photo.objects.all()
-    # serializer = PhotoSerializer(photos, many = False)
-    return Response()
+    serializer = PhotoSerializer(photos, many = True)
+    # print(photos)
+    return Response(serializer.data)
 
 
 ### ADDING VIA DJANGO ###
@@ -174,15 +176,26 @@ def likes(request):
     # user_serializer = UserSerializer(users, many=False)
     return Response(serializer.data)
 
+
+
+ 
+
 @api_view(['POST'])
-def create_like(request):
-  print("hitting")
-  data = request.data
-  like = Like.objects.create(
-    photo=data['likedPhotoId']
-  )
-  serializer = LikeSerializer(like, many=False)
-  return Response(serializer.data)
+def create_like(request, user_id, photo_id):
+    authentication_classes = (authentication.TokenAuthentication,)
+    permission_classes = (permissions.AllowAny,)
+    data = request.data
+    print('----------------------')
+    
+    print(request)
+    user = User.objects.get(pk=data['user'])
+    photo = Photo.objects.get(id=data['photo'])
+    like = Like.objects.create(
+        user = user,
+        photo = photo,  
+    )
+    serializer = LikeSerializer(like, many = False)
+    return Response(serializer.data)
 
 # Profile
 
