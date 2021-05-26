@@ -1,4 +1,6 @@
 from django.urls import path
+from django.views.decorators.csrf import csrf_exempt
+
 from . import views
 
 urlpatterns = [
@@ -7,7 +9,7 @@ urlpatterns = [
     # Photos
     path("photos/", views.photos_index, name="index"),
     path("photos/create/", views.create_photo, name="create_photo"),
-    path("photos/<int:user_id>/add_photo/", views.add_photo, name="add_photo"),
+    path("photos/<int:user_id>/add_photo/", csrf_exempt(views.create_photo), name="create_photo"),
     path("photos/<int:photo_id>/delete_photo/", views.delete_photo, name="delete_photo"),
     # path('photos/<int:pk>/delete_photo/', views.PhotoDelete.as_view(), name='delete_photo'),
 

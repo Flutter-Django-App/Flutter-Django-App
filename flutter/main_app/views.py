@@ -60,35 +60,22 @@ def photos_index(request):
 
 
 @api_view(["POST"])
-def create_photo(request):
-    print('hitting')
+def create_photo(request, user_id):
+    authentication_classes = (authentication.TokenAuthentication,)
+    permission_classes = (permissions.AllowAny,)
+    # print(request)
     data = request.data
-    print(data)
+    # print(data)
+    user = User.objects.get(pk=data['user'])
     photo = Photo.objects.create(
         caption=data["caption"],
         location=data["location"],
         url=data["url"],
-        user=User.objects.get(id),
+        user=user
     )
     print(photo)
     serializer = PhotoSerializer(photo, many=False)
     return Response(serializer.data)
-    
-# @api_view(["POST"])
-# def delete_photo(request):
-#     # print("hitting")
-#     data = request.data
-#     new_photos_array = Photo.objects.remove(
-#         photo=data["photo.id"],
-#     )
-#     serializer = PhotoSerializer(new_photos_array, many=True)
-#     return Response(serializer.data)
-
-# class PhotoDelete(DeleteView):
-#     authentication_classes = (authentication.TokenAuthentication,)
-#     permission_classes = (permissions.AllowAny,)
-#     model = Photo
-#     success_url = '/photos/'
 
 @api_view(['DELETE'])
 def delete_photo(request, photo_id):
@@ -133,7 +120,6 @@ def add_photo(request, user_id):
 
 
 # Comments / Likes
-
 
 @api_view(["GET"])
 def comments(request):
@@ -186,10 +172,10 @@ def create_like(request, user_id, photo_id):
     permission_classes = (permissions.AllowAny,)
     data = request.data
     print('----------------------')
-    
-    print(request)
+
+    print(data)
     user = User.objects.get(pk=data['user'])
-    photo = Photo.objects.get(id=data['photo'])
+    photo = Photo.objects.get(pk=data['photo'])
     like = Like.objects.create(
         user = user,
         photo = photo,  
