@@ -36,7 +36,7 @@ BUCKET = "flutter-social-django-app"
 
 # Home
 
-
+## No need for this anymore ##
 @api_view(["GET"])
 def home(request):
     print(request)
@@ -50,7 +50,7 @@ def home(request):
 def photos_index(request):
     authentication_classes = (authentication.TokenAuthentication,)
     permission_classes = (permissions.AllowAny,)
-    photos = Photo.objects.all().order_by('created_date')
+    photos = Photo.objects.all().order_by('-created_date')
     serializer = PhotoSerializer(photos, many=True)
     return Response(serializer.data)
 
@@ -67,7 +67,7 @@ def create_photo(request, user_id):
         caption=data["caption"],
         location=data["location"],
         url=data["url"],
-        user=user
+        user=user  ## if we are using this view; user should be an the user.id, I think this might be the entire model
     )
     print(photo)
     serializer = PhotoSerializer(photo, many=False)
@@ -126,7 +126,7 @@ def comments(request):
     return Response(serializer.data)
 
 @api_view(['POST'])
-def create_comment(request, user_id, photo_id):
+def create_comment(request, user_id, photo_id): ## not using user_id or photo_id
     authentication_classes = (authentication.TokenAuthentication,)
     permission_classes = (permissions.AllowAny,)
     data = request.data
@@ -182,6 +182,7 @@ def create_like(request, user_id, photo_id):
     )
     serializer = LikeSerializer(like, many = False)
     return Response(serializer.data)
+
 
 # Profile
 
