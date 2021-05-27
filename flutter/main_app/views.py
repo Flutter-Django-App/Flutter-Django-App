@@ -57,11 +57,14 @@ def photos_index(request):
     return Response(serializer.data)
 
 @api_view(["GET"])
-def profile_photos_index(request):
+def profilephoto_index(request):
     authentication_classes = (authentication.TokenAuthentication,)
     permission_classes = (permissions.AllowAny,)
     profile_photo = Profile_pic.objects.all() # match with user_id
     serializer = ProfilePhotoSerializer(profile_photo, many=True)
+    print('========================================')
+    print(profile_photo)
+    print(request)
     return Response(serializer.data)
 
 
@@ -95,7 +98,7 @@ def add_profilephoto(request, user_id):
         url=data["url"],
         user=user  
     )
-    serializer = PhotoSerializer(profile_photo, many=False)
+    serializer = ProfilePhotoSerializer(profile_photo, many=False)
     return Response(serializer.data)
 
 
