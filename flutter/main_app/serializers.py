@@ -3,6 +3,18 @@ from rest_framework import serializers
 from rest_framework_jwt.settings import api_settings
 from .models import User, Photo, Comment, Like, Tag
 
+class UserUpdateSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+    username = serializers.CharField(write_only=True)
+    first_name = serializers.CharField(write_only=True)
+    last_name = serializers.CharField(write_only=True)
+    email = serializers.CharField(write_only=True)
+    groups = serializers.CharField(write_only=True)
+    user_permissions = serializers.CharField(write_only=True)
+
+    class Meta:
+        model = User
+        fields = "__all__"  # fields = ('username',)
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
