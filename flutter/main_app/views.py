@@ -16,6 +16,7 @@ from .serializers import (
     PhotoSerializer,
     LikeSerializer,
     UserSerializerWithToken,
+    UserUpdateSerializer
 )
 import uuid
 import boto3
@@ -200,19 +201,16 @@ def profile_update(request, user_id):
     authentication_classes = (authentication.TokenAuthentication,)
     permission_classes = (permissions.AllowAny,)
     data = request.data
-    user_to_update = request.user
     print('=============================')
-    print(user_to_update)
     print(data)
     print(user_id)
-
     user = User.objects.filter(id=user_id).update(
         username=data["username"],
         first_name=data['first_name'],
         last_name=data["last_name"],
         email=data['email'],
-        password=data['password'],
     )
+    User.objects.get(id=user_id).save()
     serializer = UserUpdateSerializer(user, many=False)
     return Response(serializer.data)
 
