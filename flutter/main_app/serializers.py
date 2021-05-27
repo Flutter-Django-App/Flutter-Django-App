@@ -1,7 +1,7 @@
 from django.db.models.query import prefetch_related_objects
 from rest_framework import serializers
 from rest_framework_jwt.settings import api_settings
-from .models import User, Photo, Comment, Like, Tag
+from .models import Profile_pic, User, Photo, Comment, Like, Tag
 
 class UserUpdateSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
@@ -83,3 +83,11 @@ class PhotoSerializer(serializers.ModelSerializer):
 class Photo_UserSerializer(serializers.Serializer):
     photos = PhotoSerializer(many=True)
     user = UserSerializer(many=False)
+
+class ProfilePhotoSerializer(serializers.Serializer):
+    user = UserSerializer(many=False)
+    select_related_fields = ("user",)
+    
+    class Meta:
+        model = Profile_pic
+        fields = "__all__"

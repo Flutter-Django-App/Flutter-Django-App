@@ -23,6 +23,8 @@ urlpatterns = [
     path("likes/<int:user_id>/create/<int:photo_id>/", views.create_like, name="create_like"),
     # Profile
     path("profile/", views.profile_page, name="profile"),
+    # path("profile/<int:user_id>/photos/", views.create_profile_photo, name="create_profile_photo"),
+    path("profilephoto/<int:user_id>/add_profilephoto/", views.add_profilephoto, name="add_profilephoto"),
     path("profile/<int:user_id>/update/", views.profile_update, name="profile_update"),
     # Sign Up
     path("accounts/signup/", views.signup, name="signup"),
