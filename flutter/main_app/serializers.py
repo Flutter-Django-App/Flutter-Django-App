@@ -5,10 +5,14 @@ from .models import User, Photo, Comment, Like, Tag
 
 
 class UserSerializer(serializers.ModelSerializer):
+    # password = serializers.CharField(write_only=True)
+    # username = serializers.CharField(write_only=True)
+    # groups = serializers.CharField(write_only=True)
+    # user_permissions = serializers.CharField(write_only=True)
     class Meta:
         model = User
-        fields = "__all__"  # fields = ('username',)
-
+        fields = "__all__"  
+        # fields = ('username', 'first_name', 'last_name', 'email')  # fields = ('username',)
 
 class UserSerializerWithToken(serializers.ModelSerializer):
 
