@@ -27,7 +27,7 @@ SECRET_KEY = "django-insecure-1x85yd!$38%m0k^k4-(l=$c@c8nho-xir+_xk%w(25y+qga886
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', "https://flutter-social-network.herokuapp.com/"]
 
 
 # Application definition
