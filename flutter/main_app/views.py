@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-from .models import User, Photo, Comment, Like
+from .models import Profile_pic, User, Photo, Comment, Like
 from .serializers import (
     Photo_UserSerializer,
     UserSerializer,
@@ -16,6 +16,7 @@ from .serializers import (
     PhotoSerializer,
     LikeSerializer,
     UserSerializerWithToken,
+    ProfilePhotoSerializer,
 )
 import uuid
 import boto3
@@ -28,8 +29,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 # from drf_multiple_model.views import ObjectMultipleModelAPIView
 
 
-S3_BASE_URL = "https://s3-us-west-1.amazonaws.com/"
-BUCKET = "flutter-social-django-app"
+# S3_BASE_URL = "https://s3-us-west-1.amazonaws.com/"
+# BUCKET = "flutter-social-django-app"
 
 
 ### React Request Handlers ###
@@ -54,6 +55,14 @@ def photos_index(request):
     serializer = PhotoSerializer(photos, many=True)
     return Response(serializer.data)
 
+@api_view(["GET"])
+def profile_photos_index(request):
+    authentication_classes = (authentication.TokenAuthentication,)
+    permission_classes = (permissions.AllowAny,)
+    profile_photo = Profile_pic.objects.all() # match with user_id
+    serializer = ProfilePhotoSerializer(profile_photo, many=True)
+    return Response(serializer.data)
+
 
 @api_view(['POST'])
 def create_photo(request, user_id):
@@ -71,6 +80,23 @@ def create_photo(request, user_id):
     )
     serializer = PhotoSerializer(photo, many=False)
     return Response(serializer.data)
+
+# Profile Photo
+@api_view(['POST'])
+def add_profilephoto(request, user_id):
+    authentication_classes = (authentication.TokenAuthentication,)
+    permission_classes = (permissions.AllowAny,) 
+    print('--------------------------------------')
+    data = request.data
+    print(data)
+    user = User.objects.get(id = user_id)
+    profile_photo = Profile_pic.objects.create(
+        url=data["url"],
+        user=user  
+    )
+    serializer = PhotoSerializer(profile_photo, many=False)
+    return Response(serializer.data)
+
 
 @api_view(['DELETE'])
 def delete_photo(request, photo_id):
@@ -92,26 +118,26 @@ def delete_photo(request, photo_id):
 
 
 ### ADDING VIA DJANGO ###
-def add_photo(request, user_id):
-    # photo-file will be the "name" attribute on the <input type="file">
-    photo_file = request.FILES.get("photo-file", None)
-    print(f'photo_file {photo_file}')
+# def add_photo(request, user_id):
+#     # photo-file will be the "name" attribute on the <input type="file">
+#     photo_file = request.FILES.get("photo-file", None)
+#     print(f'photo_file {photo_file}')
 
-    if photo_file:
-        s3 = boto3.client("s3")
-        # need a unique "key" for S3 / needs image file extension too
-        key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind(".") :]
-        # just in case something goes wrong
-        try:
-            s3.upload_fileobj(photo_file, BUCKET, key)
-            # build the full url string
-            url = f"{S3_BASE_URL}{BUCKET}/{key}"
-            # we can assign to user_id or user (if you have a user object)
-            Photo.objects.create(url=url, user_id=user_id)
+#     if photo_file:
+#         s3 = boto3.client("s3")
+#         # need a unique "key" for S3 / needs image file extension too
+#         key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind(".") :]
+#         # just in case something goes wrong
+#         try:
+#             s3.upload_fileobj(photo_file, BUCKET, key)
+#             # build the full url string
+#             url = f"{S3_BASE_URL}{BUCKET}/{key}"
+#             # we can assign to user_id or user (if you have a user object)
+#             Photo.objects.create(url=url, user_id=user_id)
 
-        except:
-            print("An error occurred uploading file to S3")
-    return redirect("index")
+#         except:
+#             print("An error occurred uploading file to S3")
+#     return redirect("index")
 
 
 # Comments / Likes
