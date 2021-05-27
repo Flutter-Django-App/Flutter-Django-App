@@ -107,7 +107,8 @@ def create_photo(request, user_id):
     serializer = PhotoSerializer(photo, many=False)
     return Response(serializer.data)
 
-
+    
+ 
  
   
 @api_view(['DELETE'])
