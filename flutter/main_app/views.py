@@ -108,7 +108,8 @@ def create_photo(request, user_id):
     return Response(serializer.data)
 
 
-
+ 
+  
 @api_view(['DELETE'])
 def delete_photo(request, photo_id):
     authentication_classes = (authentication.TokenAuthentication,)
