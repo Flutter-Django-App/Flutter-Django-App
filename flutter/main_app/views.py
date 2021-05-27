@@ -55,21 +55,20 @@ def photos_index(request):
     return Response(serializer.data)
 
 
-@api_view(["POST"])
+@api_view(['POST'])
 def create_photo(request, user_id):
     authentication_classes = (authentication.TokenAuthentication,)
-    permission_classes = (permissions.AllowAny,)
-    # print(request)
+    permission_classes = (permissions.AllowAny,) 
+    # print('--------------------------------------')
     data = request.data
     # print(data)
-    user = User.objects.get(pk=data['user'])
+    user = User.objects.get(id = user_id)
     photo = Photo.objects.create(
         caption=data["caption"],
         location=data["location"],
         url=data["url"],
         user=user
     )
-    print(photo)
     serializer = PhotoSerializer(photo, many=False)
     return Response(serializer.data)
 
