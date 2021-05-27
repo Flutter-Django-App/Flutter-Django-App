@@ -196,15 +196,24 @@ def profile_page(request):
 
 
 @api_view(["PUT"])
-def profile_update(request):
+def profile_update(request, user_id):
+    authentication_classes = (authentication.TokenAuthentication,)
+    permission_classes = (permissions.AllowAny,)
     data = request.data
-    # print(data)
-    user = User.objects.update_or_create(
+    user_to_update = request.user
+    print('=============================')
+    print(user_to_update)
+    print(data)
+    print(user_id)
+
+    user = User.objects.filter(id=user_id).update(
         username=data["username"],
-        first_name=data["first_name"],
+        first_name=data['first_name'],
         last_name=data["last_name"],
+        email=data['email'],
+        password=data['password'],
     )
-    serializer = UserSerializer(data, many=False)
+    serializer = UserUpdateSerializer(user, many=False)
     return Response(serializer.data)
 
 
