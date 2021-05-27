@@ -55,23 +55,59 @@ def photos_index(request):
     return Response(serializer.data)
 
 
-@api_view(["POST"])
+# @api_view(["POST"])
+# def create_photo(request, user_id):
+#     authentication_classes = (authentication.TokenAuthentication,)
+#     permission_classes = (permissions.AllowAny,)
+#     print('=========================================================')
+#     # print(request)
+#     data = request.data
+#     # print(data)
+#     # photo_file = request.data.url
+#     print(f'photo_file {request.data}')
+#     user = User.objects.get(pk=data['user'])
+#     photo = Photo.objects.create(
+#         caption=data["caption"],
+#         location=data["location"],
+#         url=data["url"],
+#         user=user
+#     )
+#     print(photo)
+#     # photo_file = request.FILES.get("photo-file", None)
+
+#     if photo_file:
+#         s3 = boto3.client("s3")
+#         # need a unique "key" for S3 / needs image file extension too
+#         key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind(".") :]
+#         # just in case something goes wrong
+#         try:
+#             s3.upload_fileobj(photo_file, BUCKET, key)
+#             # build the full url string
+#             url = f"{S3_BASE_URL}{BUCKET}/{key}"
+#             # we can assign to user_id or user (if you have a user object)
+#             Photo.objects.create(url=url, user_id=user_id)
+#         except:
+#             serializer = PhotoSerializer(photo, many=False)
+#             return Response(serializer.data)
+
+@api_view(['POST'])
 def create_photo(request, user_id):
     authentication_classes = (authentication.TokenAuthentication,)
-    permission_classes = (permissions.AllowAny,)
-    # print(request)
+    permission_classes = (permissions.AllowAny,) 
+    # print('--------------------------------------')
     data = request.data
     # print(data)
-    user = User.objects.get(pk=data['user'])
+    user = User.objects.get(id = user_id)
     photo = Photo.objects.create(
         caption=data["caption"],
         location=data["location"],
         url=data["url"],
         user=user
     )
-    print(photo)
     serializer = PhotoSerializer(photo, many=False)
     return Response(serializer.data)
+
+
 
 @api_view(['DELETE'])
 def delete_photo(request, photo_id):
@@ -93,26 +129,26 @@ def delete_photo(request, photo_id):
 
 
 ### ADDING VIA DJANGO ###
-def add_photo(request, user_id):
-    # photo-file will be the "name" attribute on the <input type="file">
-    photo_file = request.FILES.get("photo-file", None)
-    print(f'photo_file {photo_file}')
+# def add_photo(request, user_id):
+#     # photo-file will be the "name" attribute on the <input type="file">
+#     photo_file = request.FILES.get("photo-file", None)
+#     print(f'photo_file {photo_file}')
 
-    if photo_file:
-        s3 = boto3.client("s3")
-        # need a unique "key" for S3 / needs image file extension too
-        key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind(".") :]
-        # just in case something goes wrong
-        try:
-            s3.upload_fileobj(photo_file, BUCKET, key)
-            # build the full url string
-            url = f"{S3_BASE_URL}{BUCKET}/{key}"
-            # we can assign to user_id or user (if you have a user object)
-            Photo.objects.create(url=url, user_id=user_id)
+#     if photo_file:
+#         s3 = boto3.client("s3")
+#         # need a unique "key" for S3 / needs image file extension too
+#         key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind(".") :]
+#         # just in case something goes wrong
+#         try:
+#             s3.upload_fileobj(photo_file, BUCKET, key)
+#             # build the full url string
+#             url = f"{S3_BASE_URL}{BUCKET}/{key}"
+#             # we can assign to user_id or user (if you have a user object)
+#             Photo.objects.create(url=url, user_id=user_id)
 
-        except:
-            print("An error occurred uploading file to S3")
-    return redirect("index")
+#         except:
+#             print("An error occurred uploading file to S3")
+#     return redirect("index")
 
 
 # Comments / Likes

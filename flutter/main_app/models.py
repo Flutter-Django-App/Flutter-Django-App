@@ -22,8 +22,8 @@ class Photo(models.Model):
     def __str__(self):  # is this needed? Doesn't seem to be doing anything
         return f"Photo for user_id: {self.user_id} @{self.url}"
 
-    def __str__(self):
-        return self.caption
+    # def __str__(self):
+    #     return self.caption
 
 
 class Comment(models.Model):
