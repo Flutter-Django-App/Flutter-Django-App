@@ -232,7 +232,6 @@ def profile_update(request, user_id):
     data = request.data
     print('=============================')
     print(data)
-    print(user_id)
     user = User.objects.filter(id=user_id).update(
         username=data["username"],
         first_name=data['first_name'],
@@ -240,7 +239,11 @@ def profile_update(request, user_id):
         email=data['email'],
     )
     User.objects.get(id=user_id).save()
-    serializer = UserUpdateSerializer(user, many=False)
+    updated_user = User.objects.get(id=user_id)
+    print(updated_user)
+    serializer = UserSerializer(updated_user, many=False)
+    # print(serializer)
+    print(serializer.data)
     return Response(serializer.data)
 
 
