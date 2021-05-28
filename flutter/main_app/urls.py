@@ -24,6 +24,7 @@ urlpatterns = [
     # Profile
     path("profile/", views.profile_page, name="profile"),
     # path("profile/<int:user_id>/photos/", views.create_profile_photo, name="create_profile_photo"),
+    path("profilephoto/", views.profilephoto_index, name="profilephoto_index"),
     path("profilephoto/<int:user_id>/add_profilephoto/", views.add_profilephoto, name="add_profilephoto"),
     path("profile/<int:user_id>/update/", views.profile_update, name="profile_update"),
     # Sign Up
