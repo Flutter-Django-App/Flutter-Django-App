@@ -3,6 +3,7 @@ from rest_framework import serializers
 from rest_framework_jwt.settings import api_settings
 from .models import Profile_pic, User, Photo, Comment, Like, Tag
 
+
 class UserUpdateSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     username = serializers.CharField(write_only=True)
@@ -14,12 +15,13 @@ class UserUpdateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = "__all__"  # fields = ('username',)
+        fields = "__all__"
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = "__all__"  # fields = ('username',)
+        fields = "__all__"
 
 
 class UserSerializerWithToken(serializers.ModelSerializer):
@@ -45,11 +47,10 @@ class UserSerializerWithToken(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = "__all__"  # fields ('token', 'username', 'password')
+        fields = "__all__"
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    
     class Meta:
         model = Comment
         fields = "__all__"
@@ -84,10 +85,11 @@ class Photo_UserSerializer(serializers.Serializer):
     photos = PhotoSerializer(many=True)
     user = UserSerializer(many=False)
 
+
 class ProfilePhotoSerializer(serializers.Serializer):
     user = UserSerializer(many=False)
     select_related_fields = ("user",)
-    
+
     class Meta:
         model = Profile_pic
         fields = "__all__"
