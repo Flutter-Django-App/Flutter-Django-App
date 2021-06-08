@@ -38,6 +38,7 @@ def photos_index(request):
     authentication_classes = (authentication.TokenAuthentication,)
     permission_classes = (permissions.AllowAny,)
     photos = Photo.objects.all().order_by("-created_date")
+    # print(photos)
     serializer = PhotoSerializer(photos, many=True)
     return Response(serializer.data)
 
@@ -47,6 +48,7 @@ def profilephoto_index(request):
     authentication_classes = (authentication.TokenAuthentication,)
     permission_classes = (permissions.AllowAny,)
     profile_photo = Profile_pic.objects.all()
+    print(profile_photo)
     serializer = ProfilePhotoSerializer(profile_photo, many=True)
     return Response(serializer.data)
 
@@ -56,6 +58,7 @@ def create_photo(request, user_id):
     authentication_classes = (authentication.TokenAuthentication,)
     permission_classes = (permissions.AllowAny,)
     data = request.data
+    # print(data)
     user = User.objects.get(id=user_id)
     photo = Photo.objects.create(
         caption=data["caption"],
@@ -72,8 +75,9 @@ def add_profilephoto(request, user_id):
     authentication_classes = (authentication.TokenAuthentication,)
     permission_classes = (permissions.AllowAny,)
     data = request.data
+    # print(data)
     user = User.objects.get(id=user_id)
-    profile_photo = Profile_pic.objects.create(url=data["url"], user=user)
+    profile_photo = Profile_pic.objects.create(user=user, url=data["url"],)
     serializer = ProfilePhotoSerializer(profile_photo, many=False)
     return Response(serializer.data)
 

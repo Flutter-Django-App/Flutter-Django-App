@@ -67,6 +67,12 @@ class LikeSerializer(serializers.ModelSerializer):
         model = Like
         fields = "__all__"
 
+class UrlSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Profile_pic
+        fields = ('url', )
+
 
 class PhotoSerializer(serializers.ModelSerializer):
     user = UserSerializer(many=False)
@@ -86,10 +92,23 @@ class Photo_UserSerializer(serializers.Serializer):
     user = UserSerializer(many=False)
 
 
+# class ProfilePhotoSerializer(serializers.Serializer):
+#     user = UserSerializer(many=False)
+#     select_related_fields = ("user")
+
+#     class Meta:
+#         model = Profile_pic
+#         fields = "__all__"
+
 class ProfilePhotoSerializer(serializers.Serializer):
     user = UserSerializer(many=False)
-    select_related_fields = ("user",)
+    select_related_fields = ("user")
+   
+    image_url = serializers.SerializerMethodField('get_image_url')
 
     class Meta:
         model = Profile_pic
-        fields = "__all__"
+        fields = ('user', 'url')
+
+    def get_image_url(self, obj):
+        return obj.url
