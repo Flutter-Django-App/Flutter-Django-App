@@ -170,7 +170,7 @@ export default function App() {
     if (localStorage.getItem("token")) {
       setUser(user);
       setLoggedIn(true);
-      window.location.href = "/photos"
+      window.location.href = "/api/photos/"
     }
   }
   
