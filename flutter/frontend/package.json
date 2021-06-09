@@ -2,6 +2,7 @@
   "name": "frontend",
   "proxy": "http://127.0.0.1:8000",
   "version": "0.1.0",
+  "homepage": "./",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^5.0.0-alpha.34",
@@ -25,6 +26,10 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
+  },
+  "engines": {
+    "node": "15.11.0",
+    "npm": "7.6.0"
   },
   "eslintConfig": {
     "extends": [

@@ -17,8 +17,8 @@ import UserProfilePage from "../UserProfilePage/UserProfilePage";
 import EditProfilePage from "../EditProfilePage/EditProfilePage";
 import AddProfilePhotoPage from "../AddProfilePhotoPage/AddProfilePhotoPage";
 
-// axios.defaults.xsrfCookieName = 'csrftoken'
-// axios.defaults.xsrfHeaderName = 'X-CSRFToken'
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 
 export default function App() {
   const [logged_in, setLoggedIn] = useState(
