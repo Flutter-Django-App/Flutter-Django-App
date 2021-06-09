@@ -1,0 +1,168 @@
+/* css.gg */
+@import url('https://css.gg/ {RiHomeHeartFill} .css');
+
+/* UNPKG */
+@import url('https://unpkg.com/css.gg/icons/css/ {RiHomeHeartFill} .css');
+
+/* JSDelivr */
+@import url('https://cdn.jsdelivr.net/npm/css.gg/icons/css/ {RiHomeHeartFill} .css');
+
+/* css.gg */
+@import url('https://css.gg/css?= {RiHomeHeartFill} | {RiHomeHeartFill}');
+
+
+@import url('https://css.gg/css?= {RiHomeHeartFill} | {RiHomeHeartFill}');
+
+div {
+    -webkit-box-align: stretch;
+    -webkit-align-items: stretch;
+    -ms-flex-align: stretch;
+    align-items: stretch;
+    border: 0 solid #000;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-flex-shrink: 0;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+a {
+    color: #00376b;
+    color: rgba(var(--fe0,0,55,107),1);
+    text-decoration: none;
+}
+
+
+.nav-b2 {
+    background-color: rgba(var(--d87,255,255,255),1);
+    border-bottom: 1px solid #dbdbdb;
+    border-bottom: 1px solid rgba(var(--b6a,219,219,219),1);
+    height: 77px;
+    position: fixed;
+    top: 0;
+    -webkit-transition: height .2s ease-in-out;
+    transition: height .2s ease-in-out;
+    width: 100%;
+    z-index: 3;
+}
+
+.nav-bar2 {
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    height: 54px;
+}
+
+.nav-bar {
+    webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    height: 77px;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    max-width: 975px;
+    padding: 26px 20px;
+    -webkit-transition: height .2s ease-in-out;
+    transition: height .2s ease-in-out;
+    width: 100%;
+}
+
+.nav-b {
+    height: 54px;
+    padding: 0 20px;
+}
+
+.nav-3 {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 9999 0%;
+    -ms-flex: 1 9999 0%;
+    flex: 1 9999 0%;
+    min-width: 40px; 
+}
+
+.nav-5 {
+    margin-top: 7px;
+    -webkit-transition: opacity .1s ease-out;
+    transition: opacity .1s ease-out;
+}
+
+.nav-logo {
+    max-height: 100%;
+    max-width: 100%;
+    -o-object-fit: contain;
+    object-fit: contain; 
+}
+
+.nav-6 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    padding-left: 24px;
+    white-space: nowrap;
+}
+
+.icon-div {
+    -webkit-box-align: stretch;
+    -webkit-align-items: stretch;
+    -ms-flex-align: stretch;
+    align-items: stretch;
+    border: 0 solid #000;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-flex-shrink: 0;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+.icons {
+    display: block;
+    position: relative;
+    margin-left: 22px;
+}
+
+.gg {
+    --ggs: 20;
+}

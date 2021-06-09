@@ -1,9 +1,12 @@
-from django.urls import path
+from django.urls import path, include
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework_jwt.views import obtain_jwt_token
 
 from . import views
 
 urlpatterns = [
+    path("token-auth/", obtain_jwt_token),
+    # path("accounts/", include("django.contrib.auth.urls")),
     # Photos
     path("photos/", views.photos_index, name="index"),
     path("photos/create/", views.create_photo, name="create_photo"),
