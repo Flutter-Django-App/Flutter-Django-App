@@ -65,7 +65,7 @@ export default function AddProfilePhotoPage({user}) {
     } catch {
       console.log('bleh')
     }
-    history.push("");
+    history.push("/");
   }
 
   return (

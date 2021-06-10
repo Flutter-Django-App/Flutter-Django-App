@@ -95,7 +95,7 @@ export default function App() {
       }
       const response = await axios(options);
       setProfilePhoto(response.data);
-      history.push("");
+      history.push(/);
     }
     fetchProfilePhotos();
   }, []);
