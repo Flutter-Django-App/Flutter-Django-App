@@ -37,8 +37,8 @@ export default function CommentButton({
               type="submit"
               color="primary"
               onClick={handleSubmit}
-              value={photo.id}
-              name={photo.id}
+              value={photo_id}
+              // name={photo_id}
             >
               <a class="wpO6b  " type="submit">
                 <svg
@@ -66,8 +66,8 @@ export default function CommentButton({
               type="submit"
               color="primary"
               onClick={handleSubmit}
-              value={photo.id}
-              name={photo.id}
+              value={photo_id}
+              // name={photo_id}
             >
               <a class="wpO6b  " type="submit">
                 <svg

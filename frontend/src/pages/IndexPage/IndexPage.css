@@ -77,3 +77,11 @@ div {
     -webkit-border-radius: 15px;
     -moz-border-radius: 15px;
 }
+
+.flexboxcontainer {
+    display: flex;
+}
+
+.photobuttons {
+    display: table-row;
+}

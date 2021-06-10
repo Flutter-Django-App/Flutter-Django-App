@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { ButtonGroup} from 'react-bootstrap';
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 
@@ -150,10 +151,26 @@ export default function UserProfilePage({ user, profilePhoto }) {
                   <div className=" \flex-box">
                     <Card.Body as="div">
                       <Card.Title as="div">
-                        <Row>
+                      <Card.Text as="div">
+                    {profilePhoto.map((profilephoto) => (
+                      <>
+                        {profilephoto.user.id === photo.user.id ? (
+                          <img
+                            className="profilephoto_feed"
+                            src={profilephoto.image_url}
+                          />
+                        ) : (
+                          ""
+                        )}
+                      </>
+                    ))}
+                  </Card.Text>
+                  <ButtonGroup  className="photobuttons">
+                              <Button variant="contained" value={user.id}>
                           <strong>{photo.user.username}</strong>
-                          <Col>
-                            <CardGroup>
+                          </Button>
+                       
+                        
                               <Button
                                 variant="contained"
                                 onClick={handleShow}
@@ -209,9 +226,8 @@ export default function UserProfilePage({ user, profilePhoto }) {
                               ) : (
                                 ""
                               )}
-                            </CardGroup>
-                          </Col>
-                        </Row>
+                         
+                        </ButtonGroup>
                         <div className="my-3">{photo.location}</div>
                       </Card.Title>
                       <Card.Img as="div">

@@ -287,3 +287,7 @@ h1 {
     width: 100%;
     padding-top: 70px;
 }
+
+.photobuttons {
+    display: table-row;
+}

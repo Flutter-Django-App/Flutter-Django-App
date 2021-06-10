@@ -5,10 +5,12 @@ import {
   Row,
   Card,
   CardGroup,
+  CardLink,
   ListGroup,
   ListGroupItem,
+  ButtonGroup
 } from "react-bootstrap";
-import { Form, Button, Modal } from "react-bootstrap";
+import { Form, Button, Modal} from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 
 import LikeButton from "./../../components/LikeButton/LikeButton";
@@ -111,7 +113,7 @@ export default function IndexPage({ user, profilePhoto }) {
     }
     fetchAllUsers();
   }, []);
-  
+
   useEffect(() => {
     async function fetchPhotos() {
       const options = {
@@ -127,7 +129,7 @@ export default function IndexPage({ user, profilePhoto }) {
     }
     fetchPhotos();
   }, []);
-  
+
   const handleLike = async (e) => {
     const photo_id = e.target.value;
     e.preventDefault();
@@ -151,7 +153,7 @@ export default function IndexPage({ user, profilePhoto }) {
     }
     history.push("/");
   };
-  console.log(allUsers)
+  console.log(allUsers);
   return (
     <section className="index-pg ind-pg">
       <div className="ind-div">
@@ -161,13 +163,18 @@ export default function IndexPage({ user, profilePhoto }) {
               <Card className="my-3 p-3 rounded">
                 <Card.Body as="div">
                   <Card.Text as="div">
-                      {profilePhoto.map((profilephoto) => (
-                        <>
-                        {profilephoto.user.id===photo.user.id ? (
-                          <img className="profilephoto_feed" src={profilephoto.image_url} />
-                        ) : ("")}
-                        </>
-                      ))}
+                    {profilePhoto.map((profilephoto) => (
+                      <>
+                        {profilephoto.user.id === photo.user.id ? (
+                          <img
+                            className="profilephoto_feed"
+                            src={profilephoto.image_url}
+                          />
+                        ) : (
+                          ""
+                        )}
+                      </>
+                    ))}
                   </Card.Text>
                   <Card.Title as="div">
                     <strong>{photo.user.username}</strong>
@@ -176,11 +183,11 @@ export default function IndexPage({ user, profilePhoto }) {
                     <div className="my-3">{photo.location}</div>
                     <img src={photo.url} />
                   </Card.Text>
-
                   <Form
-                    as="div"
+                    onSubmit={handleSubmit}
                     onSubmit={handleLike}
                     class="flexbox-container"
+                    className="flexbox-container"
                   >
                     <LikeButton user={user} photo_id={photo.id} photo={photo} />
                     <CommentButton
@@ -192,7 +199,8 @@ export default function IndexPage({ user, profilePhoto }) {
                       handleSubmit={handleSubmit}
                     />
                     <SaveButton user={user} photo_id={photo.id} photo={photo} />
-                  </Form>
+                    </Form>
+                    
                   <Card.Text as="div">
                     <div className="my-3">
                       <span>
@@ -200,8 +208,8 @@ export default function IndexPage({ user, profilePhoto }) {
                       </span>
                     </div>
                   </Card.Text>
-                
-                  <LikesModal 
+
+                  <LikesModal
                     key={photo.id}
                     // show={show}
                     // handleShow={handleShow}
@@ -217,6 +225,8 @@ export default function IndexPage({ user, profilePhoto }) {
                         {comment.photo === photo.id ? (
                           <div className="my-3">
                             <span>
+                              <ButtonGroup  className="photobuttons">
+                              <Button variant="contained" value={user.id}>
                               <strong>
                                 {
                                   allUsers.find(
@@ -225,7 +235,8 @@ export default function IndexPage({ user, profilePhoto }) {
                                 }
                               </strong>
                               {comment.comment}{" "}
-                              <CardGroup>
+                              </Button>
+                             
                                 <Button
                                   variant="contained"
                                   onClick={handleShowLikes}
@@ -281,7 +292,7 @@ export default function IndexPage({ user, profilePhoto }) {
                                 ) : (
                                   ""
                                 )}
-                              </CardGroup>
+                              </ButtonGroup>
                             </span>
                           </div>
                         ) : (
