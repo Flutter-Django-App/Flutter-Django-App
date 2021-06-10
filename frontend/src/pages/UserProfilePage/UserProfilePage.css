@@ -98,6 +98,18 @@ main {
     vertical-align: baseline;  */
 }
 
+.profilephoto {
+    margin-bottom: 50px;
+    align-self: center;
+    width: 300px;
+    height: 300px;
+    background-size: cover;
+    display: block;
+    border-radius: 150px;
+    -webkit-border-radius: 150px;
+    -moz-border-radius: 150px;
+}
+
 .profile-1 {
     padding: 30px 20px 0;
 }
@@ -122,11 +134,12 @@ main {
 }
 
 
-@media (min-width: 736px);
+@media (min-width: 736px) {
 .header-1 {
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
     margin-bottom: 44px;
+}
 }
 
 h1 {

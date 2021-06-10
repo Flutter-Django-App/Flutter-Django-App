@@ -26,7 +26,7 @@ export default function App() {
   );
   const [user, setUser] = useState([]);
   const history = useHistory();
-  const [profilePhoto, setProfilePhoto] = useState('Add a Profile Picure!');
+  const [profilePhoto, setProfilePhoto] = useState([]);
 
   // const [username, setUsername] = useState(
   //   localStorage.getItem("token") ? localStorage.getItem("token").username : " "
@@ -99,15 +99,6 @@ export default function App() {
     }
     fetchProfilePhotos();
   }, []);
-  
-  // useEffect(() => {
-  //   async function fetchAllUsers() {
-  //     const { data } = await axios.get("/allusers/");
-  //     setAllUsers(data);
-  //     console.log(allUsers)
-  //   }
-  //   fetchAllUsers();
-  // }, [allUsers]);
 
   const handle_login = async (e, formData) => {
     e.preventDefault();
@@ -223,46 +214,51 @@ export default function App() {
   //   }
 
   return (
-    // <Router>
-    <>
-      <NavBar2 logged_in={logged_in} handle_logout={handle_logout} />
-      <Container id="window">
-        
-        <Route exact path="/">
-          {!logged_in ? (
-            <LoginForm handle_login={handle_login} />
-            // <HomePage logged_in={logged_in} user={user} />
-            ) : (
-            <IndexPage logged_in={logged_in} user={user} /*userId={userId}*/  /*allUsers={allUsers}*/ />
-          )}
-        </Route>
-        <Route exact path="/photos">
-          <IndexPage logged_in={logged_in} user={user} /*userId={userId} allUsers={allUsers}*/ />
-        </Route>
-        <Route exact path="/photos/create">
-          <AddPhotoPage logged_in={logged_in} user={user} />
-        </Route>
-        <Route exact path="/profile">
-          <UserProfilePage logged_in={logged_in} user={user} profilePhoto={profilePhoto} /*allUsers={allUsers}*/ />
-        </Route>
-        <Route exact path="/profile/update">
-          <EditProfilePage logged_in={logged_in} user={user} setUser={setUser} />
-        </Route>
-        <Route exact path="/profile/photo">
-          <AddProfilePhotoPage logged_in={logged_in} user={user} />
-        </Route>
-        <Route exact path="/signup">
-          <SignUpForm handle_signup={handle_signup} />
-        </Route>
-        <Route exact path="/login">
-          {logged_in ? (
-            <IndexPage logged_in={logged_in} user={user} /*userId={userId}  allUsers={allUsers}*/ />
-          ):(
-            <LoginForm handle_login={handle_login} />
-          )}
-        </Route>
-      </Container>
-      </>
-    // </Router>
+    <React.Fragment>
+    <NavBar2 logged_in={logged_in} handle_logout={handle_logout} />
+    <Container id="window">
+      <Route exact path="/">
+        {!logged_in ? (
+          <LoginForm handle_login={handle_login} />
+        ) : (
+          <IndexPage logged_in={logged_in} user={user} profilePhoto={profilePhoto} />
+        )}
+      </Route>
+      <Route exact path="/photos">
+        <IndexPage logged_in={logged_in} user={user} profilePhoto={profilePhoto} />
+      </Route>
+      <Route exact path="/photos/create">
+        <AddPhotoPage logged_in={logged_in} user={user} />
+      </Route>
+      <Route exact path="/profile">
+        <UserProfilePage
+          logged_in={logged_in}
+          user={user}
+          profilePhoto={profilePhoto}
+        />
+      </Route>
+      <Route exact path="/profile/update">
+        <EditProfilePage
+          logged_in={logged_in}
+          user={user}
+          setUser={setUser}
+          profilePhoto={profilePhoto}
+        />
+      </Route>
+      <Route exact path="/profile/photo">
+        <AddProfilePhotoPage logged_in={logged_in} user={user} profilePhoto={profilePhoto} />
+      </Route>
+      <Route exact path="/signup">
+        <SignUpForm handle_signup={handle_signup} />
+      </Route>
+      <Route exact path="/login">
+        {logged_in ? (
+          <IndexPage logged_in={logged_in} user={user} />
+        ) : (
+          <LoginForm handle_login={handle_login} />
+        )}
+      </Route>
+    </Container>
+  </React.Fragment>
   );
 }

@@ -1,0 +1,10 @@
+.likeduserprofilepic {
+    
+    width: 30px;
+    height: 30px;
+    background-size: cover;
+    display: block;
+    border-radius: 15px;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+}
