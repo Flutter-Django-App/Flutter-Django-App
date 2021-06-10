@@ -44,7 +44,7 @@ export default function AddPhotoPage({ user }) {
       });
     console.log("axios finished", img);
     const options = {
-      url: `http://localhost:8000/photos/${user.id}/add_photo/`,
+      url: `/api/photos/${user.id}/add_photo/`,
       method: "POST",
       headers: {
         Authorization: `JWT ${localStorage.getItem("token")}`,
