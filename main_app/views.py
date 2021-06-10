@@ -72,7 +72,8 @@ def add_profilephoto(request, user_id):
     authentication_classes = (authentication.TokenAuthentication,)
     permission_classes = (permissions.AllowAny,)
     data = request.data
-    user = User.objects.get(id=user_id)
+    user = User.objects.get(id=user_id)    
+    profile_photo = Profile_pic.objects.filter(user=user).delete()
     profile_photo = Profile_pic.objects.create(url=data["url"], user=user)
     serializer = ProfilePhotoSerializer(profile_photo, many=False)
     return Response(serializer.data)
