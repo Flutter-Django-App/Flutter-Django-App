@@ -160,7 +160,19 @@ a {
 .icons {
     display: block;
     position: relative;
-    margin-left: 22px;
+    margin-left: 22px; 
+}
+.profileicons {
+    display: block;
+    position: relative;
+    margin-left: 22px; 
+    width: 30px;
+    height: 30px;
+    background-size: cover;
+    display: block;
+    border-radius: 15px;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
 }
 
 .gg {

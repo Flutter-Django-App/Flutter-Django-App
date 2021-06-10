@@ -95,7 +95,7 @@ export default function App() {
       }
       const response = await axios(options);
       setProfilePhoto(response.data);
-      console.log(profilePhoto)
+      history.push("");
     }
     fetchProfilePhotos();
   }, []);
@@ -171,51 +171,10 @@ export default function App() {
     setUser([]);
     // setUsername("");
   };
-
-  // console.log(localStorage.getItem("token"));
-  // console.log(username);
-
-  // console.log(user);
-  // console.log(logged_in);
-
-  //     console.log(localStorage.getItem('token'))
-  //     console.log(this.state.username)
-  //     console.log(this.state.logged_in)
-  //     console.log(this.state)
-
-  //     return (
-  //       <Router>
-  //       <main className="App">
-  //         <NavBar
-  //           logged_in={this.state.logged_in}
-  //           display_form={this.display_form}
-  //           handle_logout={this.handle_logout}
-  //         />
-  //         {form}
-  //         <h3>
-  //           {this.state.logged_in ? (
-  //             <>
-  //               <div>Hello, {this.state.username}</div>
-  //               <Container>
-  //                 <Route path="/" component={HomePage} exact />
-  //                 <Route path="/photos" component={IndexPage} exact />
-  //                 <Route path='/photos/create' component={AddPhotoPage} />
-  //                 <Route path="/profile" component={UserProfilePage} exact />
-  //                 <Route path="/profile/update" component={EditProfilePage} exact />
-  //               </Container>
-  //               </>
-  //           ) : (
-  //             <div>Please Log In</div>
-  //             )}
-  //         </h3>
-  //       </main>
-  // </Router>
-  //     );
-  //   }
-
+  
   return (
     <React.Fragment>
-    <NavBar2 logged_in={logged_in} handle_logout={handle_logout} />
+    <NavBar2 logged_in={logged_in} handle_logout={handle_logout} user={user} profilePhoto={profilePhoto} />
     <Container id="window">
       <Route exact path="/">
         {!logged_in ? (
