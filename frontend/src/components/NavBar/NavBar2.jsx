@@ -96,7 +96,12 @@ export default function NavBar2({ logged_in, handle_logout, user, profilePhoto }
                                         width="36px"
                                       />
                                     ) : (
-                                      ""
+                                      <img
+                                      className="icons"
+                                      src="https://i.imgur.com/nmYlsec.png"
+                                      to="/profile/"
+                                      height="30px" width="36px"
+                                    />
                                     )}
                                   </>
                                 ))}
