@@ -84,7 +84,7 @@ export default function EditProfilePage({ user, setUser }) {
                   className="form-control"
                   name="username"
                   value={formData.username}
-                  onChange={handleChange}
+                  onChange={}
                   required
                 />
               </div>
