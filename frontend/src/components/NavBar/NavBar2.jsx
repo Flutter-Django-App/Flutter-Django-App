@@ -85,26 +85,32 @@ export default function NavBar2({ logged_in, handle_logout, user, profilePhoto }
                           <div>
                             <LinkContainer to="/profile">
                               <Nav.Link>
-                                {profilePhoto.map((profilephoto) => (
-                                  <>
-                                    {profilephoto.user.id === user.id ? (
-                                      <img
-                                        className="profileicons"
-                                        src={profilephoto.image_url}
-                                        to="/profile/"
-                                        height="30px"
-                                        width="36px"
-                                      />
-                                    ) : (
-                                      <img
+                                {profilePhoto ? (
+                                  <React.Framework>
+                                   {profilePhoto.map((profilephoto) => (
+                                    <React.Framework>
+                                      {profilephoto.user.id === user.id ? (
+                                        <img
+                                          className="profileicons"
+                                          src={profilephoto.image_url}
+                                          to="/profile/"
+                                          height="30px"
+                                          width="36px"
+                                        />
+                                      ) : (
+                                        ""
+                                      )}
+                                    </React.Framework>
+                                  ))}
+                                  </React.Framework>
+                                ) : (
+                                  <img
                                       className="icons"
                                       src="https://i.imgur.com/nmYlsec.png"
                                       to="/profile/"
                                       height="30px" width="36px"
                                     />
                                     )}
-                                  </>
-                                ))}
                               </Nav.Link>
                             </LinkContainer>
                           </div>
