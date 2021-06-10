@@ -30,7 +30,7 @@ export default function SaveButton({ user, photo_id, photo }) {
   const handleSave = async (e) => {
     e.preventDefault();
     const options = {
-      url: `http://localhost:8000/likes/${user.id}/create/${photo_id}/`,
+      url: `/api/likes/${user.id}/create/${photo_id}/`,
       method: "POST",
       headers: {
         Authorization: `JWT ${localStorage.getItem("token")}`,
