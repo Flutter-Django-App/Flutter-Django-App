@@ -86,9 +86,9 @@ export default function NavBar2({ logged_in, handle_logout, user, profilePhoto }
                             <LinkContainer to="/profile">
                               <Nav.Link>
                                 {profilePhoto ? (
-                                  <React.Framework>
+                                  <>
                                    {profilePhoto.map((profilephoto) => (
-                                    <React.Framework>
+                                    <>
                                       {profilephoto.user.id === user.id ? (
                                         <img
                                           className="profileicons"
@@ -100,9 +100,9 @@ export default function NavBar2({ logged_in, handle_logout, user, profilePhoto }
                                       ) : (
                                         ""
                                       )}
-                                    </React.Framework>
+                                    </>
                                   ))}
-                                  </React.Framework>
+                                  </>
                                 ) : (
                                   <img
                                       className="icons"

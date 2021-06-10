@@ -101,7 +101,7 @@ def comments(request):
 
 
 @api_view(["POST"])
-def create_comment(request):
+def create_comment(request, user_id, photo_id):
     authentication_classes = (authentication.TokenAuthentication,)
     permission_classes = (permissions.AllowAny,)
     data = request.data
