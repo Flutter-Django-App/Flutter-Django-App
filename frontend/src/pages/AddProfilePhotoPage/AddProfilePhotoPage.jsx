@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import './AddProfilePhotoPage.css'
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Modal } from "react-bootstrap";
+import { FormGroup, FormControl, FormLabel } from "react-bootstrap";
 
 // axios.defaults.xsrfCookieName='csrftoken'
 // axios.defaults.xsrfHeaderName = 'X-CSRFToken'
