@@ -67,10 +67,43 @@ export default function AddProfilePhotoPage({user}) {
     }
     history.push("/");
   }
+  const uploadModalRef = useRef();
+  const dragOver = (e) => {
+    e.preventDefault();
+  };
+  const dragEnter = (e) => {
+    e.preventDefault();
+  };
+  const dragLeave = (e) => {
+    e.preventDefault();
+  };
+  const fileDrop = (e) => {
+    e.preventDefault();
+    const files = e.dataTransfer.files;
+    setImage(files[0]);
+    console.log(files);
+  };
+  const closeUploadModal = () => {
+    uploadModalRef.current.style.display = "none";
+  };
 
   return (
     <>
     <h1>Hello</h1>
+    
+      <h1>Add Photo</h1>
+      <div className="container">
+        <div
+          className="drop-container"
+          onDragOver={dragOver}
+          onDragEnter={dragEnter}
+          onDragLeave={dragLeave}
+          onDrop={fileDrop}
+        >
+          Drag & Drop files here or click to upload below
+        </div>
+      </div>
+      <hr></hr>
     <Form onSubmit={handleSubmit}>
     <Form.Group>
     <Form.Label>Upload Image:</Form.Label>
