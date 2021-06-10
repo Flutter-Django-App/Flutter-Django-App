@@ -8,9 +8,9 @@ import {
   CardLink,
   ListGroup,
   ListGroupItem,
-  ButtonGroup
+  ButtonGroup,
 } from "react-bootstrap";
-import { Form, Button, Modal} from "react-bootstrap";
+import { Form, Button, Modal } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 
 import LikeButton from "./../../components/LikeButton/LikeButton";
@@ -162,23 +162,26 @@ export default function IndexPage({ user, profilePhoto }) {
             <CardGroup>
               <Card className="my-3 p-3 rounded">
                 <Card.Body as="div">
-                  <Card.Text as="div">
-                    {profilePhoto.map((profilephoto) => (
-                      <>
-                        {profilephoto.user.id === photo.user.id ? (
-                          <img
-                            className="profilephoto_feed"
-                            src={profilephoto.image_url}
-                          />
-                        ) : (
-                          ""
-                        )}
-                      </>
-                    ))}
-                  </Card.Text>
-                  <Card.Title as="div">
-                    <strong>{photo.user.username}</strong>
-                  </Card.Title>
+                  <ButtonGroup className="photoheader_feed">
+                    <Button variant="contained" className="photoprofilepics">
+                      {profilePhoto.map((profilephoto) => (
+                        <>
+                          {profilephoto.user.id === photo.user.id ? (
+                            <img
+                              className="profilephoto_feed"
+                              src={profilephoto.image_url}
+                            />
+                          ) : (
+                            ""
+                          )}
+                        </>
+                      ))}
+                    </Button>
+
+                    <Button variant="contained" value={user.id}>
+                      <strong>{photo.user.username}</strong>
+                    </Button>
+                  </ButtonGroup>
                   <Card.Text as="div">
                     <div className="my-3">{photo.location}</div>
                     <img src={photo.url} />
@@ -199,8 +202,8 @@ export default function IndexPage({ user, profilePhoto }) {
                       handleSubmit={handleSubmit}
                     />
                     <SaveButton user={user} photo_id={photo.id} photo={photo} />
-                    </Form>
-                    
+                  </Form>
+
                   <Card.Text as="div">
                     <div className="my-3">
                       <span>
@@ -225,18 +228,20 @@ export default function IndexPage({ user, profilePhoto }) {
                         {comment.photo === photo.id ? (
                           <div className="my-3">
                             <span>
-                              <ButtonGroup  className="photobuttons">
-                              <Button variant="contained" value={user.id}>
-                              <strong>
-                                {
-                                  allUsers.find(
-                                    (element) => (element = `${comment.user}`)
-                                  ).username
-                                }
-                              </strong>
-                              {comment.comment}{" "}
-                              </Button>
-                             
+                              <ButtonGroup className="photobuttons">
+                                <Button variant="contained" value={user.id}>
+                                  <strong>
+                                    {
+                                      allUsers.find(
+                                        (element) =>
+                                          (element = `${comment.user}`)
+                                      ).username
+                                    }
+                                  </strong> 
+                                  &nbsp;&nbsp;
+                                  {comment.comment}{" "}
+                                </Button>
+
                                 <Button
                                   variant="contained"
                                   onClick={handleShowLikes}

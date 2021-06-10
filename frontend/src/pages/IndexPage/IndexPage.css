@@ -85,3 +85,20 @@ div {
 .photobuttons {
     display: table-row;
 }
+
+.photoheader_feed {
+    display: table-row;
+    align-content: center;
+    justify-content: center;
+    justify-self: center;
+    display: flex;
+    flex-direction: row;
+    max-width: 100px;
+
+}
+
+.photoprofilepics {
+    max-width: 30px;
+    max-height: 25px;
+  
+}

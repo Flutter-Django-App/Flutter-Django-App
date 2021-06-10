@@ -1,20 +1,17 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState } from "react";
+// import axios from "axios";
 import {
   Col,
   Row,
   Card,
-  CardGroup,
-  ListGroup,
-  ListGroupItem,
+  // CardGroup,
+  // ListGroup,
+  // ListGroupItem,
 } from "react-bootstrap";
-import { Form, Button, Modal, Container } from "react-bootstrap";
-import { useHistory } from "react-router-dom";
+import {  Modal, Container } from "react-bootstrap";
 import "./LikesModal.css";
 
-
 export default function LikesModal({
-  key,
   //   show,
   //   handleShow,
   //   handleClose,
@@ -45,29 +42,33 @@ export default function LikesModal({
 
           {photo.likes.map((like) => (
             <Container>
-            
               <Row>
                 <div
                   id="likedusers"
                   className="user-name name name1 name-profile"
                 >
-                 {profilePhoto.map((profilephoto) => (
-                        <>
-                        {profilephoto.user.id===like.user ? (
-                          <img className="likeduserprofilepic" src={profilephoto.image_url} />
-                        ) : ("")}
-                        </>
-                      ))}
+                  {profilePhoto.map((profilephoto) => (
+                    <>
+                      {profilephoto.user.id === like.user ? (
+                        <img
+                          className="likeduserprofilepic"
+                          src={profilephoto.image_url}
+                        />
+                      ) : (
+                        ""
+                      )}
+                    </>
+                  ))}
                 </div>
                 <div
-                    id="likedusers"
-                    className="user-name name name1 name-profile"
-                  >
-                    {
-                      allUsers.find((element) => (element = `${like.user}`))
-                        .username
-                    }
-                  </div>
+                  id="likedusers"
+                  className="user-name name name1 name-profile"
+                >
+                  {
+                    allUsers.find((element) => (element = `${like.user}`))
+                      .username
+                  }
+                </div>
               </Row>
               <Row>
                 <Col>

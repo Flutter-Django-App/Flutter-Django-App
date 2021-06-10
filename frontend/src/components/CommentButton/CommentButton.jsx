@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, Button, Modal } from "react-bootstrap";
+import { Button} from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 
 export default function CommentButton({

@@ -288,6 +288,30 @@ h1 {
     padding-top: 70px;
 }
 
-.photobuttons {
+.photoheader_profile {
     display: table-row;
+    align-content: center;
+    justify-content: center;
+    justify-self: center;
+    display: flex;
+    flex-direction: row;
+    max-width: 150px;
+
+}
+
+.photoprofilepics {
+    max-width: 30px;
+    max-height: 25px;
+  
+}
+
+.profilephoto_profile {
+    margin-bottom: 50px;
+    width: 30px;
+    height: 30px;
+    background-size: cover;
+    display: block;
+    border-radius: 15px;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
 }
